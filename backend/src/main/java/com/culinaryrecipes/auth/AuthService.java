@@ -1,10 +1,12 @@
 package com.culinaryrecipes.auth;
 
+import com.culinaryrecipes.security.JwtService;
 import com.culinaryrecipes.users.User;
 import com.culinaryrecipes.users.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.culinaryrecipes.security.JwtService;
 
 @Service
 @RequiredArgsConstructor
@@ -12,11 +14,13 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
 
     
     public AuthResponse login(LoginRequest request) {
-        return new AuthResponse("fake-jwt-token");
+        String token = jwtService.generateToken(request.getUsername());
+        return new AuthResponse(token);
     }
 
     public void register(RegisterRequest request) {
