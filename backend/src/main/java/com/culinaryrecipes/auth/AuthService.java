@@ -13,6 +13,12 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+
+    
+    public AuthResponse login(LoginRequest request) {
+        return new AuthResponse("fake-jwt-token");
+    }
+
     public void register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new RuntimeException("Username already exists");
@@ -31,3 +37,4 @@ public class AuthService {
         userRepository.save(user);
     }
 }
+
