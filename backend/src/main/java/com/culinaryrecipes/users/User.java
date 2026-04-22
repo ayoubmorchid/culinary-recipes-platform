@@ -22,6 +22,9 @@ public class User {
 
     @Column(unique = true, nullable = false)
     private String username;
+    
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Profile profile;
 
     @Column(unique = true, nullable = false)
     private String email;
