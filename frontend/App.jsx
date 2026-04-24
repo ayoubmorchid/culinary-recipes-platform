@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import PublicProfile from "./pages/PublicProfile";
+import RecipeDetail from "./pages/RecipeDetail";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Route path="/users/:username" element={<PublicProfile />} />
       <Route path="/" element={<div>Home</div>} />
       <Route path="/login" element={<Login />} />
+      <Route path="/recipes/:slug" element={<RecipeDetail />} />
       <Route path="/register" element={<Register />} />
     </Routes>
   );
