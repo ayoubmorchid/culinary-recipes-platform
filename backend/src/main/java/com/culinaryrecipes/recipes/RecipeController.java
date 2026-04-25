@@ -21,4 +21,9 @@ public class RecipeController {
     public ResponseEntity<List<RecipeDto>> getAllRecipes() {
         return ResponseEntity.ok(recipeService.getAllRecipes());
     }
+
+    @PostMapping
+    public ResponseEntity<RecipeDto> createRecipe(@RequestBody RecipeRequest request) {
+        return ResponseEntity.ok(recipeService.createRecipe(request));
+    }
 }

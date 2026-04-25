@@ -34,4 +34,20 @@ public class RecipeService {
                         .build())
                 .toList();
     }
+
+    public RecipeDto createRecipe(RecipeRequest request) {
+        Recipe recipe = Recipe.builder()
+                .title(request.getTitle())
+                .slug(request.getTitle().toLowerCase().replace(" ", "-"))
+                .description(request.getDescription())
+                .build();
+
+        Recipe savedRecipe = recipeRepository.save(recipe);
+
+        return RecipeDto.builder()
+                .title(savedRecipe.getTitle())
+                .slug(savedRecipe.getSlug())
+                .description(savedRecipe.getDescription())
+                .build();
+    }
 }
