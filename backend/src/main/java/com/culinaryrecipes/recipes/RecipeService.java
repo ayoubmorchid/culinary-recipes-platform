@@ -2,6 +2,7 @@ package com.culinaryrecipes.recipes;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -11,27 +12,16 @@ public class RecipeService {
     private final RecipeRepository recipeRepository;
 
     public RecipeDto getRecipeBySlug(String slug) {
-
         Recipe recipe = recipeRepository.findBySlug(slug)
                 .orElseThrow(() -> new RuntimeException("Recipe not found"));
 
-        return RecipeDto.builder()
-                .title(recipe.getTitle())
-                .slug(recipe.getSlug())
-                .description(recipe.getDescription())
-                .authorUsername(recipe.getAuthor().getUsername())
-                .build();
+        return mapToDto(recipe);
     }
 
     public List<RecipeDto> getAllRecipes() {
         return recipeRepository.findAllByOrderByIdDesc()
                 .stream()
-                .map(recipe -> RecipeDto.builder()
-                        .title(recipe.getTitle())
-                        .slug(recipe.getSlug())
-                        .description(recipe.getDescription())
-                        .authorUsername(recipe.getAuthor().getUsername())
-                        .build())
+                .map(this::mapToDto)
                 .toList();
     }
 
@@ -44,10 +34,17 @@ public class RecipeService {
 
         Recipe savedRecipe = recipeRepository.save(recipe);
 
+        return mapToDto(savedRecipe);
+    }
+
+    private RecipeDto mapToDto(Recipe recipe) {
         return RecipeDto.builder()
-                .title(savedRecipe.getTitle())
-                .slug(savedRecipe.getSlug())
-                .description(savedRecipe.getDescription())
+                .title(recipe.getTitle())
+                .slug(recipe.getSlug())
+                .description(recipe.getDescription())
+                .authorUsername(recipe.getAuthor() != null ? recipe.getAuthor().getUsername() : null)
+                .categoryName(recipe.getCategory() != null ? recipe.getCategory().getName() : null)
+                .categorySlug(recipe.getCategory() != null ? recipe.getCategory().getSlug() : null)
                 .build();
     }
 }

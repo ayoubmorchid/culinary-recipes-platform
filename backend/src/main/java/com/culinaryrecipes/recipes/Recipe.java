@@ -27,4 +27,8 @@ public class Recipe {
     @ManyToOne
     @JoinColumn(name = "author_id")
     private User author;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 }

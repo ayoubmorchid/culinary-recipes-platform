@@ -11,4 +11,6 @@ public class RecipeDto {
     private String slug;
     private String description;
     private String authorUsername;
+    private String categoryName;
+    private String categorySlug;
 }
