@@ -6,6 +6,7 @@ import RecipeDetail from "./pages/RecipeDetail";
 import Recipes from "./pages/Recipes";
 import CreateRecipe from "./pages/CreateRecipe";
 import Categories from "./pages/Categories";
+import Favorites from "./pages/Favorites";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <Route path="/" element={<div>Home</div>} />
       <Route path="/categories" element={<Categories />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/favorites" element={<Favorites />} />
       <Route path="/recipes/create" element={<CreateRecipe />} />
       <Route path="/recipes/:slug" element={<RecipeDetail />} />
       <Route path="/register" element={<Register />} />
