@@ -7,7 +7,7 @@ import Recipes from "./pages/Recipes";
 import CreateRecipe from "./pages/CreateRecipe";
 import Categories from "./pages/Categories";
 import Favorites from "./pages/Favorites";
-
+import AdminDashboard from "./pages/AdminDashboard";
 function App() {
   return (
     <Routes>
@@ -16,6 +16,7 @@ function App() {
       <Route path="/categories" element={<Categories />} />
       <Route path="/login" element={<Login />} />
       <Route path="/favorites" element={<Favorites />} />
+      <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/recipes/create" element={<CreateRecipe />} />
       <Route path="/recipes/:slug" element={<RecipeDetail />} />
       <Route path="/register" element={<Register />} />
