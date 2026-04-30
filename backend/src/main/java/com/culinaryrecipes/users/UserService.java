@@ -1,5 +1,9 @@
 package com.culinaryrecipes.users;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.culinaryrecipes.storage.FileStorageService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,5 +23,11 @@ public class UserService {
                 .bio(profile.getBio())
                 .avatar(profile.getAvatar())
                 .build();
+    }
+
+    private final FileStorageService fileStorageService;
+
+    public String uploadAvatar(MultipartFile file) {
+        return fileStorageService.saveFile(file);
     }
 }
