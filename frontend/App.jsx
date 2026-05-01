@@ -8,6 +8,7 @@ import CreateRecipe from "./pages/CreateRecipe";
 import Categories from "./pages/Categories";
 import Favorites from "./pages/Favorites";
 import AdminDashboard from "./pages/AdminDashboard";
+import PrivateRoute from "./components/PrivateRoute";
 function App() {
   return (
     <Routes>
@@ -17,7 +18,14 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/favorites" element={<Favorites />} />
       <Route path="/admin" element={<AdminDashboard />} />
-      <Route path="/recipes/create" element={<CreateRecipe />} />
+      <Route
+        path="/recipes/create"
+        element={
+          <PrivateRoute>
+            <CreateRecipe />
+          </PrivateRoute>
+        }
+      />
       <Route path="/recipes/:slug" element={<RecipeDetail />} />
       <Route path="/register" element={<Register />} />
       <Route path="/recipes" element={<Recipes />} />
