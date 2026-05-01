@@ -11,12 +11,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommentController {
 
+    @PostMapping
+    public ResponseEntity<CommentDto> addComment(
+            @PathVariable String slug,
+            @RequestBody CommentRequest request) {
+        return ResponseEntity.ok(commentService.addComment(slug, request));
+    }
+
     private final CommentService commentService;
 
     @GetMapping
     public ResponseEntity<List<CommentDto>> getComments(
-            @PathVariable String slug
-    ) {
+            @PathVariable String slug) {
         return ResponseEntity.ok(commentService.getCommentsByRecipe(slug));
     }
 }
