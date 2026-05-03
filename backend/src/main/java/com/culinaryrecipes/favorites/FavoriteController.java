@@ -13,12 +13,18 @@ public class FavoriteController {
 
     private final FavoriteService favoriteService;
 
+    @PostMapping("/{username}/{slug}/toggle")
+    public ResponseEntity<String> toggleFavorite(
+            @PathVariable String username,
+            @PathVariable String slug) {
+        return ResponseEntity.ok(
+                favoriteService.toggleFavorite(username, slug));
+    }
+
     @GetMapping("/{username}")
     public ResponseEntity<List<FavoriteDto>> getFavorites(
-            @PathVariable String username
-    ) {
+            @PathVariable String username) {
         return ResponseEntity.ok(
-                favoriteService.getUserFavorites(username)
-        );
+                favoriteService.getUserFavorites(username));
     }
 }
