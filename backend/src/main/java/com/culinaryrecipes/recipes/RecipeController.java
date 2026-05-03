@@ -22,6 +22,12 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.getAllRecipes());
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<List<RecipeDto>> searchRecipes(
+            @RequestParam String query) {
+        return ResponseEntity.ok(recipeService.searchRecipes(query));
+    }
+
     @PostMapping
     public ResponseEntity<RecipeDto> createRecipe(@RequestBody RecipeRequest request) {
         return ResponseEntity.ok(recipeService.createRecipe(request));
