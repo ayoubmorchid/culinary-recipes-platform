@@ -7,6 +7,8 @@ import lombok.Data;
 @Builder
 public class RecipeDto {
 
+    private double averageRating;
+    private int totalRatings;
     private String title;
     private String slug;
     private String description;

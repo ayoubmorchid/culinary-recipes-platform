@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class RecipeService {
-
+    private final RatingRepository ratingRepository;
     private final RecipeRepository recipeRepository;
 
     public RecipeDto getRecipeBySlug(String slug) {
@@ -38,7 +38,17 @@ public class RecipeService {
     }
 
     private RecipeDto mapToDto(Recipe recipe) {
+        var ratings = ratingRepository.findByRecipeSlug(recipe.getSlug());
+
+        double averageRating = ratings.isEmpty()
+                ? 0
+                : ratings.stream()
+                        .mapToInt(Rating::getValue)
+                        .average()
+                        .orElse(0);
         return RecipeDto.builder()
+                .averageRating(averageRating)
+                .totalRatings(ratings.size())
                 .title(recipe.getTitle())
                 .slug(recipe.getSlug())
                 .description(recipe.getDescription())
