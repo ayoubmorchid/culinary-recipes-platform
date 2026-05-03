@@ -57,4 +57,12 @@ public class RecipeService {
                 .categorySlug(recipe.getCategory() != null ? recipe.getCategory().getSlug() : null)
                 .build();
     }
+
+    public List<RecipeDto> searchRecipes(String keyword) {
+        return recipeRepository
+                .findByTitleContainingIgnoreCaseOrderByIdDesc(keyword)
+                .stream()
+                .map(this::mapToDto)
+                .toList();
+    }
 }
