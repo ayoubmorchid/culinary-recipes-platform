@@ -9,6 +9,7 @@ import Categories from "./pages/Categories";
 import Favorites from "./pages/Favorites";
 import AdminDashboard from "./pages/AdminDashboard";
 import PrivateRoute from "./components/PrivateRoute";
+import Search from "./pages/Search";
 function App() {
   return (
     <Routes>
@@ -18,6 +19,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/favorites" element={<Favorites />} />
       <Route path="/admin" element={<AdminDashboard />} />
+      <Route path="/search" element={<Search />} />
       <Route
         path="/recipes/create"
         element={
