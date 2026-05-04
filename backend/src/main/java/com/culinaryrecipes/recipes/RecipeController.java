@@ -32,4 +32,11 @@ public class RecipeController {
     public ResponseEntity<RecipeDto> createRecipe(@RequestBody RecipeRequest request) {
         return ResponseEntity.ok(recipeService.createRecipe(request));
     }
+
+    @PutMapping("/{slug}")
+    public ResponseEntity<RecipeDto> updateRecipe(
+            @PathVariable String slug,
+            @RequestBody RecipeRequest request) {
+        return ResponseEntity.ok(recipeService.updateRecipe(slug, request));
+    }
 }
