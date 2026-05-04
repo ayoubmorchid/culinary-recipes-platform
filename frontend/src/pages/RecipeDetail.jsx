@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "../api/axios";
 import commentService from "../services/commentService";
 import ratingService from "../services/ratingService";
+import favoriteService from "../services/favoriteService";
 
 function RecipeDetail() {
   const { slug } = useParams();
@@ -57,7 +58,15 @@ function RecipeDetail() {
       alert("Failed to add comment");
     }
   };
-
+  const handleToggleFavorite = async () => {
+    try {
+      const username = "test";
+      const res = await favoriteService.toggleFavorite(username, slug);
+      alert(res.data);
+    } catch (error) {
+      alert("Failed to update favorite");
+    }
+  };
   if (!recipe) return <div>Loading...</div>;
 
   return (
@@ -67,6 +76,9 @@ function RecipeDetail() {
       <p>Author: {recipe.authorUsername}</p>
       <p>Average rating: {recipe.averageRating || 0}</p>
       <p>Total ratings: {recipe.totalRatings || ratings.length}</p>
+      <button onClick={handleToggleFavorite}>
+        Toggle Favorite
+      </button>
 
       <h2>Rate this recipe</h2>
 
