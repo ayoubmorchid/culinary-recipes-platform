@@ -39,4 +39,10 @@ public class RecipeController {
             @RequestBody RecipeRequest request) {
         return ResponseEntity.ok(recipeService.updateRecipe(slug, request));
     }
+
+    @DeleteMapping("/{slug}")
+    public ResponseEntity<String> deleteRecipe(@PathVariable String slug) {
+        recipeService.deleteRecipe(slug);
+        return ResponseEntity.ok("Recipe deleted successfully");
+    }
 }
