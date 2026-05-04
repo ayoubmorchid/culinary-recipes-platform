@@ -11,6 +11,19 @@ public class RecipeService {
     private final RatingRepository ratingRepository;
     private final RecipeRepository recipeRepository;
 
+    public RecipeDto updateRecipe(String slug, RecipeRequest request) {
+        Recipe recipe = recipeRepository.findBySlug(slug)
+                .orElseThrow(() -> new RuntimeException("Recipe not found"));
+
+        recipe.setTitle(request.getTitle());
+        recipe.setSlug(request.getTitle().toLowerCase().replace(" ", "-"));
+        recipe.setDescription(request.getDescription());
+
+        Recipe updatedRecipe = recipeRepository.save(recipe);
+
+        return mapToDto(updatedRecipe);
+    }
+
     public RecipeDto getRecipeBySlug(String slug) {
         Recipe recipe = recipeRepository.findBySlug(slug)
                 .orElseThrow(() -> new RuntimeException("Recipe not found"));
