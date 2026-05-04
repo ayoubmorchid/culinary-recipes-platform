@@ -78,4 +78,11 @@ public class RecipeService {
                 .map(this::mapToDto)
                 .toList();
     }
+
+    public void deleteRecipe(String slug) {
+        Recipe recipe = recipeRepository.findBySlug(slug)
+                .orElseThrow(() -> new RuntimeException("Recipe not found"));
+
+        recipeRepository.delete(recipe);
+    }
 }
