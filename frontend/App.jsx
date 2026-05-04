@@ -38,7 +38,14 @@ function App() {
             </PrivateRoute>
           }
         />
-
+        <Route
+          path="/recipes/:slug/edit"
+          element={
+            <PrivateRoute>
+              <EditRecipe />
+            </PrivateRoute>
+          }
+        />
         <Route path="/categories" element={<Categories />} />
         <Route path="/favorites" element={<Favorites />} />
         <Route path="/admin" element={<AdminDashboard />} />
