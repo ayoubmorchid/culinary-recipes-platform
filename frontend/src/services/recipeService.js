@@ -8,6 +8,12 @@ const recipeService = {
 
   getBySlug: (slug) =>
     axios.get(`/recipes/${slug}`),
+
+  update: (slug, data) =>
+    axios.put(`/recipes/${slug}`, data),
+
+  remove: (slug) =>
+    axios.delete(`/recipes/${slug}`),
 };
 
 export default recipeService;
