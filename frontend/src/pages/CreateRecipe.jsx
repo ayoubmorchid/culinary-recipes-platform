@@ -1,7 +1,10 @@
 import { useState } from "react";
-import axios from "../api/axios";
+import { useNavigate } from "react-router-dom";
+import recipeService from "../services/recipeService";
 
 function CreateRecipe() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -18,8 +21,9 @@ function CreateRecipe() {
     e.preventDefault();
 
     try {
-      await axios.post("/recipes", formData);
+      const res = await recipeService.create(formData);
       alert("Recipe created");
+      navigate(`/recipes/${res.data.slug}`);
     } catch (error) {
       alert("Failed to create recipe");
     }
@@ -32,16 +36,16 @@ function CreateRecipe() {
       <form onSubmit={handleSubmit}>
         <input
           name="title"
-          placeholder="Recipe title"
           value={formData.title}
           onChange={handleChange}
+          placeholder="Recipe title"
         />
 
         <textarea
           name="description"
-          placeholder="Recipe description"
           value={formData.description}
           onChange={handleChange}
+          placeholder="Recipe description"
         />
 
         <button type="submit">Create</button>
