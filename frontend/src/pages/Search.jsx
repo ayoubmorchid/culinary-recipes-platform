@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import recipeService from "../services/recipeService";
+import RecipeCard from "../components/RecipeCard";
 
 function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -46,11 +47,7 @@ function Search() {
       </form>
 
       {recipes.map((recipe) => (
-        <div key={recipe.slug}>
-          <h3>{recipe.title}</h3>
-          <p>{recipe.description}</p>
-          <Link to={`/recipes/${recipe.slug}`}>View recipe</Link>
-        </div>
+        <RecipeCard key={recipe.slug} recipe={recipe} />
       ))}
     </div>
   );

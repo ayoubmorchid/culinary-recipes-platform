@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import axios from "../api/axios";
+import RecipeCard from "../components/RecipeCard";
 
 function Recipes() {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    axios.get("/recipes")
+    axios
+      .get("/recipes")
       .then((res) => setRecipes(res.data))
       .catch(() => alert("Failed to load recipes"));
   }, []);
@@ -16,11 +17,7 @@ function Recipes() {
       <h1>Recipes</h1>
 
       {recipes.map((recipe) => (
-        <div key={recipe.slug}>
-          <h3>{recipe.title}</h3>
-          <p>{recipe.description}</p>
-          <Link to={`/recipes/${recipe.slug}`}>View recipe</Link>
-        </div>
+        <RecipeCard key={recipe.slug} recipe={recipe} />
       ))}
     </div>
   );
