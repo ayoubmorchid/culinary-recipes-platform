@@ -14,6 +14,7 @@ import AdminDashboard from "./pages/AdminDashboard";
 import Search from "./pages/Search";
 
 import PrivateRoute from "./components/PrivateRoute";
+import AdminRoute from "./components/AdminRoute";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -54,8 +55,16 @@ function App() {
 
           <Route path="/categories" element={<Categories />} />
           <Route path="/favorites" element={<Favorites />} />
-          <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/search" element={<Search />} />
+
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          />
         </Routes>
       </main>
 
