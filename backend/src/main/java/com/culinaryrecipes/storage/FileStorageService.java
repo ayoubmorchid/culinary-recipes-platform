@@ -4,9 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
+import java.util.UUID;
 
 @Service
 public class FileStorageService {
@@ -21,11 +20,25 @@ public class FileStorageService {
                 Files.createDirectories(uploadPath);
             }
 
-            Path filePath = uploadPath.resolve(file.getOriginalFilename());
+            String originalName = file.getOriginalFilename();
 
-            Files.copy(file.getInputStream(), filePath);
+            String extension = "";
 
-            return filePath.toString();
+            if (originalName != null && originalName.contains(".")) {
+                extension = originalName.substring(originalName.lastIndexOf("."));
+            }
+
+            String filename = UUID.randomUUID() + extension;
+
+            Path filePath = uploadPath.resolve(filename);
+
+            Files.copy(
+                    file.getInputStream(),
+                    filePath,
+                    StandardCopyOption.REPLACE_EXISTING
+            );
+
+            return "/uploads/" + filename;
 
         } catch (IOException e) {
             throw new RuntimeException("Failed to store file");
