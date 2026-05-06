@@ -33,6 +33,12 @@ public class RecipeController {
         return ResponseEntity.ok(recipeService.createRecipe(request));
     }
 
+    @GetMapping("/author/{username}")
+    public ResponseEntity<List<RecipeDto>> getRecipesByAuthor(
+            @PathVariable String username) {
+        return ResponseEntity.ok(recipeService.getRecipesByAuthor(username));
+    }
+
     @PutMapping("/{slug}")
     public ResponseEntity<RecipeDto> updateRecipe(
             @PathVariable String slug,

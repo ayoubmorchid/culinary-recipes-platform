@@ -79,6 +79,13 @@ public class RecipeService {
                 .toList();
     }
 
+    public List<RecipeDto> getRecipesByAuthor(String username) {
+        return recipeRepository.findByAuthorUsernameOrderByIdDesc(username)
+                .stream()
+                .map(this::mapToDto)
+                .toList();
+    }
+
     public void deleteRecipe(String slug) {
         Recipe recipe = recipeRepository.findBySlug(slug)
                 .orElseThrow(() -> new RuntimeException("Recipe not found"));
