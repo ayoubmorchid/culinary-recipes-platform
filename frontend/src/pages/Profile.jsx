@@ -3,27 +3,37 @@ import userService from "../services/userService";
 import Loading from "../components/Loading";
 
 function Profile() {
+
   const [profile, setProfile] = useState(null);
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     bio: "",
   });
+
+  const [avatarPreview, setAvatarPreview] = useState("");
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+
     userService
       .getMyProfile()
       .then((res) => {
+
         setProfile(res.data);
+
         setFormData({
           firstName: res.data.firstName || "",
           lastName: res.data.lastName || "",
           bio: res.data.bio || "",
         });
+
       })
       .catch(() => alert("Failed to load profile"))
       .finally(() => setLoading(false));
+
   }, []);
 
   const handleChange = (e) => {
@@ -37,24 +47,39 @@ function Profile() {
     e.preventDefault();
 
     try {
+
       const res = await userService.updateMyProfile(formData);
+
       setProfile(res.data);
+
       alert("Profile updated");
+
     } catch (error) {
       alert("Failed to update profile");
     }
   };
 
   const handleAvatarUpload = async (e) => {
+
     const file = e.target.files[0];
 
     if (!file) {
       return;
     }
 
+    setAvatarPreview(URL.createObjectURL(file));
+
     try {
-      await userService.uploadAvatar(file);
+
+      const res = await userService.uploadAvatar(file);
+
+      setProfile((prev) => ({
+        ...prev,
+        avatar: res.data,
+      }));
+
       alert("Avatar uploaded");
+
     } catch (error) {
       alert("Failed to upload avatar");
     }
@@ -64,24 +89,40 @@ function Profile() {
     return <Loading message="Loading profile..." />;
   }
 
+  const getAvatarUrl = () => {
+
+    if (avatarPreview) {
+      return avatarPreview;
+    }
+
+    if (profile?.avatar) {
+      return `http://localhost:8080${profile.avatar}`;
+    }
+
+    return "";
+  };
+
   return (
     <div>
+
       <h1>My Profile</h1>
 
-      {profile?.avatar && (
+      {getAvatarUrl() && (
         <img
-          src={`http://localhost:8080${profile.avatar}`}
+          src={getAvatarUrl()}
           alt="Avatar"
           width="120"
         />
       )}
 
       <p>Username: {profile?.username}</p>
+
       <p>Email: {profile?.email}</p>
 
       <input type="file" onChange={handleAvatarUpload} />
 
       <form onSubmit={handleUpdate}>
+
         <input
           name="firstName"
           value={formData.firstName}
@@ -103,7 +144,10 @@ function Profile() {
           placeholder="Bio"
         />
 
-        <button type="submit">Update Profile</button>
+        <button type="submit">
+          Update Profile
+        </button>
+
       </form>
     </div>
   );
