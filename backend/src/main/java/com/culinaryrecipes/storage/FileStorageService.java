@@ -13,15 +13,12 @@ public class FileStorageService {
     private final Path uploadPath = Paths.get("uploads");
 
     public String saveFile(MultipartFile file) {
-
         try {
-
             if (!Files.exists(uploadPath)) {
                 Files.createDirectories(uploadPath);
             }
 
             String originalName = file.getOriginalFilename();
-
             String extension = "";
 
             if (originalName != null && originalName.contains(".")) {
@@ -29,14 +26,9 @@ public class FileStorageService {
             }
 
             String filename = UUID.randomUUID() + extension;
-
             Path filePath = uploadPath.resolve(filename);
 
-            Files.copy(
-                    file.getInputStream(),
-                    filePath,
-                    StandardCopyOption.REPLACE_EXISTING
-            );
+            Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
             return "/uploads/" + filename;
 
