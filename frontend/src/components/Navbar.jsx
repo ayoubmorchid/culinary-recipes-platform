@@ -17,6 +17,10 @@ function Navbar() {
       {token ? (
         <>
           {" | "}
+          <Link to="/profile">Profile</Link>
+          {" | "}
+          <Link to="/my-recipes">My Recipes</Link>
+          {" | "}
           <Link to="/recipes/create">Create Recipe</Link>
           {" | "}
           <Link to="/favorites">Favorites</Link>

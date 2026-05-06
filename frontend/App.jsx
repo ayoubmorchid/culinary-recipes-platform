@@ -13,7 +13,7 @@ import Categories from "./pages/Categories";
 import Favorites from "./pages/Favorites";
 import AdminDashboard from "./pages/AdminDashboard";
 import Search from "./pages/Search";
-
+import MyRecipes from "./pages/MyRecipes";
 import PrivateRoute from "./components/PrivateRoute";
 import AdminRoute from "./components/AdminRoute";
 import Navbar from "./components/Navbar";
@@ -30,7 +30,14 @@ function App() {
 
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-
+          <Route
+            path="/my-recipes"
+            element={
+              <PrivateRoute>
+                <MyRecipes />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/profile"
             element={
