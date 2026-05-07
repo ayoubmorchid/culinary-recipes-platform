@@ -1,14 +1,36 @@
-import { Navigate } from "react-router-dom";
-import useAuth from "../hooks/useAuth";
+import React from 'react'
+import { Navigate, useLocation } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 
-function AdminRoute({ children }) {
-  const { token } = useAuth();
+const AdminRoute = ({ children }) => {
+  const { isAdmin, isAuthenticated, loading } = useAuth()
+  const location = useLocation()
 
-  if (!token) {
-    return <Navigate to="/login" replace />;
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center min-vh-50 py-5">
+        <div className="spinner-border text-success" role="status">
+          <span className="visually-hidden">Chargement...</span>
+        </div>
+      </div>
+    )
   }
 
-  return children;
+  if (!isAuthenticated) {
+    return (
+      <Navigate
+        to="/login"
+        state={{ from: location }}
+        replace
+      />
+    )
+  }
+
+  if (!isAdmin) {
+    return <Navigate to="/" replace />
+  }
+
+  return children
 }
 
-export default AdminRoute;
+export default AdminRoute
