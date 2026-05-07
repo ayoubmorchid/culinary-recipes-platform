@@ -1,29 +1,144 @@
-import { createContext, useState } from "react";
-import axios from "../api/axios";
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import api from '../api/axios'
 
-export const AuthContext = createContext();
+export const AuthContext = createContext(null)
 
-export function AuthProvider({ children }) {
-  const [token, setToken] = useState(localStorage.getItem("token"));
+export const useAuth = () => {
+  const context = useContext(AuthContext)
+
+  if (!context) {
+    throw new Error('useAuth must be used within AuthProvider')
+  }
+
+  return context
+}
+
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [alert, setAlert] = useState({
+    show: false,
+    message: '',
+    type: 'success'
+  })
+
+  useEffect(() => {
+    const initAuth = () => {
+      try {
+        const token = localStorage.getItem('token')
+        const storedUser = localStorage.getItem('user')
+
+        if (token && storedUser) {
+          const parsedUser = JSON.parse(storedUser)
+          setUser(parsedUser)
+          api.defaults.headers.common.Authorization = `Bearer ${token}`
+        }
+      } catch (error) {
+        console.error('Auth init error:', error)
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        delete api.defaults.headers.common.Authorization
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    initAuth()
+  }, [])
+
+  const getErrorMessage = (error, fallback) => {
+    const data = error.response?.data
+
+    if (typeof data === 'string') return data
+    if (data?.message) return data.message
+    if (data?.error) return data.error
+
+    if (data && typeof data === 'object') {
+      return Object.values(data).join(', ')
+    }
+
+    return fallback
+  }
+
+  const showAlert = (message, type = 'success') => {
+    setAlert({ show: true, message, type })
+
+    setTimeout(() => {
+      setAlert({ show: false, message: '', type: 'success' })
+    }, 5000)
+  }
 
   const login = async (username, password) => {
-    const res = await axios.post("/auth/login", { username, password });
-    localStorage.setItem("token", res.data.token);
-    setToken(res.data.token);
-  };
+    try {
+      const response = await api.post('/auth/login', { username, password })
+      const { token, user: userData } = response.data
 
-  const register = async (username, email, password) => {
-    await axios.post("/auth/register", { username, email, password });
-  };
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(userData))
+
+      api.defaults.headers.common.Authorization = `Bearer ${token}`
+      setUser(userData)
+
+      showAlert('Connexion réussie !', 'success')
+      return { success: true }
+    } catch (error) {
+      const message = getErrorMessage(error, 'Erreur de connexion')
+      showAlert(message, 'danger')
+      return { success: false, error: message }
+    }
+  }
+
+  const register = async (userData) => {
+    try {
+      const response = await api.post('/auth/register', userData)
+      const { token, user: userDataResp } = response.data
+
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(userDataResp))
+
+      api.defaults.headers.common.Authorization = `Bearer ${token}`
+      setUser(userDataResp)
+
+      showAlert('Inscription réussie !', 'success')
+      return { success: true }
+    } catch (error) {
+      const message = getErrorMessage(error, "Erreur d'inscription")
+      showAlert(message, 'danger')
+      return { success: false, error: message }
+    }
+  }
 
   const logout = () => {
-    localStorage.removeItem("token");
-    setToken(null);
-  };
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    delete api.defaults.headers.common.Authorization
+
+    setUser(null)
+    showAlert('Déconnexion réussie', 'info')
+  }
+
+  const updateUser = (updatedUser) => {
+    localStorage.setItem('user', JSON.stringify(updatedUser))
+    setUser(updatedUser)
+  }
+
+  const value = {
+    user,
+    loading,
+    alert,
+    setAlert,
+    showAlert,
+    login,
+    register,
+    logout,
+    updateUser,
+    isAuthenticated: Boolean(user),
+    isAdmin: user?.role === 'ADMIN'
+  }
 
   return (
-    <AuthContext.Provider value={{ token, login, register, logout }}>
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
-  );
+  )
 }
