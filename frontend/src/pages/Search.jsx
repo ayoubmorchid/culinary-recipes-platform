@@ -1,56 +1,107 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import recipeService from "../services/recipeService";
-import RecipeCard from "../components/RecipeCard";
+import React, { useEffect, useState } from 'react'
+import { Link, useSearchParams } from 'react-router-dom'
 
-function Search() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [query, setQuery] = useState(searchParams.get("q") || "");
-  const [recipes, setRecipes] = useState([]);
+import RecipeCard from '../components/RecipeCard'
+import Pagination from '../components/Pagination'
+import Loading from '../components/Loading'
+
+import { recipeService } from '../services/recipeService'
+
+const Search = () => {
+  const [searchParams] = useSearchParams()
+
+  const query = searchParams.get('q') || ''
+  const page = parseInt(searchParams.get('page') || '1', 10)
+
+  const [recipes, setRecipes] = useState([])
+  const [pagination, setPagination] = useState({})
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const q = searchParams.get("q");
+    loadResults()
+  }, [query, page])
 
-    if (!q) {
-      setRecipes([]);
-      return;
-    }
-
-    recipeService
-      .search(q)
-      .then((res) => setRecipes(res.data))
-      .catch(() => setRecipes([]));
-  }, [searchParams]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const loadResults = async () => {
     if (!query.trim()) {
-      return;
+      setRecipes([])
+      setPagination({})
+      setLoading(false)
+      return
     }
 
-    setSearchParams({ q: query });
-  };
+    try {
+      setLoading(true)
+
+      const data = await recipeService.getRecipes(page, 12, query)
+      const list = Array.isArray(data) ? data : data.content || []
+
+      setRecipes(list)
+
+      setPagination({
+        currentPage: data.number + 1 || page,
+        totalPages: data.totalPages || 1,
+        totalElements: data.totalElements || list.length
+      })
+    } catch (error) {
+      console.error('Erreur recherche:', error)
+      setRecipes([])
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  if (loading) {
+    return <Loading message={`Recherche de "${query}"...`} />
+  }
 
   return (
-    <div>
-      <h1>Search Recipes</h1>
+    <div className="container py-5">
+      <div className="text-center mb-5">
+        <h1 className="display-5 fw-bold mb-3">
+          <i className="fas fa-search me-3 text-success"></i>
+          Recherche : "{query}"
+        </h1>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search recipe"
-        />
+        <p className="lead text-muted">
+          {pagination.totalElements || 0} résultat
+          {pagination.totalElements !== 1 ? 's' : ''} trouvé
+          {pagination.totalElements !== 1 ? 's' : ''}
+        </p>
+      </div>
 
-        <button type="submit">Search</button>
-      </form>
+      {recipes.length === 0 ? (
+        <div className="text-center py-5">
+          <i className="fas fa-search fa-3x text-muted mb-4"></i>
 
-      {recipes.map((recipe) => (
-        <RecipeCard key={recipe.slug} recipe={recipe} />
-      ))}
+          <h3 className="text-muted mb-3">Aucun résultat</h3>
+
+          <p className="text-muted mb-4">
+            Aucune recette ne correspond à votre recherche "{query}".
+          </p>
+
+          <Link to="/recipes" className="btn btn-success">
+            Explorer toutes les recettes
+          </Link>
+        </div>
+      ) : (
+        <>
+          <div className="row g-4 mb-5">
+            {recipes.map((recipe) => (
+              <div key={recipe.id || recipe.slug} className="col-xl-4 col-lg-6">
+                <RecipeCard recipe={recipe} />
+              </div>
+            ))}
+          </div>
+
+          <Pagination
+            currentPage={pagination.currentPage}
+            totalPages={pagination.totalPages}
+            basePath={`/search?q=${encodeURIComponent(query)}`}
+          />
+        </>
+      )}
     </div>
-  );
+  )
 }
 
-export default Search;
+export default Search
