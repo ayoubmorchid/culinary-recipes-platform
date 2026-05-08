@@ -15,6 +15,7 @@ public class CategoryService {
         return categoryRepository.findAll()
                 .stream()
                 .map(category -> CategoryDto.builder()
+                        .id(category.getId())
                         .name(category.getName())
                         .slug(category.getSlug())
                         .build())
