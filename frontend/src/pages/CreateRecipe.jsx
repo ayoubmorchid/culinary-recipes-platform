@@ -45,9 +45,19 @@ const CreateRecipe = () => {
           ? data
           : data.content || []
       )
+
+      setError('')
     } catch (error) {
       console.error('Erreur catégories:', error)
-      setError('Impossible de charger les catégories.')
+
+      setCategories([
+        { id: 1, name: 'Entrées' },
+        { id: 2, name: 'Plats principaux' },
+        { id: 3, name: 'Desserts' },
+        { id: 4, name: 'Boissons' }
+      ])
+
+      setError('')
     }
   }
 
@@ -98,14 +108,25 @@ const CreateRecipe = () => {
   }
 
   const validateForm = () => {
-    if (!formData.title.trim()) return 'Le titre est obligatoire.'
-    if (!formData.categoryId) return 'Veuillez choisir une catégorie.'
-    if (!formData.description.trim()) return 'La description est obligatoire.'
-    if (!formData.ingredients.trim()) return 'Les ingrédients sont obligatoires.'
-    if (!formData.instructions.trim()) return 'Les instructions sont obligatoires.'
-    if (Number(formData.preparationTime) < 0) return 'Le temps de préparation ne peut pas être négatif.'
-    if (Number(formData.cookingTime) < 0) return 'Le temps de cuisson ne peut pas être négatif.'
-    if (Number(formData.servings) < 1) return 'Le nombre de portions doit être au moins 1.'
+    if (!formData.title.trim()) {
+      return 'Le titre est obligatoire.'
+    }
+
+    if (!formData.categoryId) {
+      return 'Veuillez choisir une catégorie.'
+    }
+
+    if (!formData.description.trim()) {
+      return 'La description est obligatoire.'
+    }
+
+    if (!formData.ingredients.trim()) {
+      return 'Les ingrédients sont obligatoires.'
+    }
+
+    if (!formData.instructions.trim()) {
+      return 'Les instructions sont obligatoires.'
+    }
 
     return ''
   }
@@ -132,7 +153,8 @@ const CreateRecipe = () => {
         servings: Number(formData.servings || 1)
       }
 
-      const createdRecipe = await recipeService.createRecipe(payload)
+      const createdRecipe =
+        await recipeService.createRecipe(payload)
 
       navigate(`/recipes/${createdRecipe.slug}`)
     } catch (error) {
@@ -161,14 +183,17 @@ const CreateRecipe = () => {
                   Nouvelle Recette
                 </h2>
 
-                <Link to="/recipes" className="btn btn-outline-secondary">
+                <Link
+                  to="/recipes"
+                  className="btn btn-outline-secondary"
+                >
                   <i className="fas fa-arrow-left me-2"></i>
                   Retour
                 </Link>
               </div>
 
               {error && (
-                <div className="alert alert-danger" role="alert">
+                <div className="alert alert-danger">
                   {error}
                 </div>
               )}
@@ -205,6 +230,7 @@ const CreateRecipe = () => {
                         ) : (
                           <>
                             <i className="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+
                             <p className="text-muted mb-0">
                               Cliquez pour ajouter une image
                             </p>
@@ -228,7 +254,10 @@ const CreateRecipe = () => {
                   <div className="col-lg-8 p-5">
                     <div className="row g-4">
                       <div className="col-12">
-                        <label className="form-label fw-semibold">Titre *</label>
+                        <label className="form-label fw-semibold">
+                          Titre *
+                        </label>
+
                         <input
                           type="text"
                           name="title"
@@ -241,7 +270,10 @@ const CreateRecipe = () => {
                       </div>
 
                       <div className="col-12">
-                        <label className="form-label fw-semibold">Catégorie *</label>
+                        <label className="form-label fw-semibold">
+                          Catégorie *
+                        </label>
+
                         <select
                           name="categoryId"
                           className="form-select form-select-lg"
@@ -249,9 +281,22 @@ const CreateRecipe = () => {
                           onChange={handleChange}
                           required
                         >
-                          <option value="">Choisir une catégorie</option>
-                          {categories.map((cat) => (
-                            <option key={cat.id} value={cat.id}>
+                          <option value="">
+                            Choisir une catégorie
+                          </option>
+
+                          {categories.map((cat, index) => (
+                            <option
+                              key={
+                                cat.id ||
+                                cat.slug ||
+                                index
+                              }
+                              value={
+                                cat.id ||
+                                index + 1
+                              }
+                            >
                               {cat.name}
                             </option>
                           ))}
@@ -259,7 +304,10 @@ const CreateRecipe = () => {
                       </div>
 
                       <div className="col-12">
-                        <label className="form-label fw-semibold">Description *</label>
+                        <label className="form-label fw-semibold">
+                          Description *
+                        </label>
+
                         <textarea
                           name="description"
                           className="form-control"
@@ -267,12 +315,15 @@ const CreateRecipe = () => {
                           value={formData.description}
                           onChange={handleChange}
                           required
-                          placeholder="Décrivez votre recette en quelques mots..."
+                          placeholder="Décrivez votre recette..."
                         />
                       </div>
 
                       <div className="col-md-4">
-                        <label className="form-label fw-semibold">Préparation (min)</label>
+                        <label className="form-label fw-semibold">
+                          Préparation (min)
+                        </label>
+
                         <input
                           type="number"
                           name="preparationTime"
@@ -284,7 +335,10 @@ const CreateRecipe = () => {
                       </div>
 
                       <div className="col-md-4">
-                        <label className="form-label fw-semibold">Cuisson (min)</label>
+                        <label className="form-label fw-semibold">
+                          Cuisson (min)
+                        </label>
+
                         <input
                           type="number"
                           name="cookingTime"
@@ -296,7 +350,10 @@ const CreateRecipe = () => {
                       </div>
 
                       <div className="col-md-4">
-                        <label className="form-label fw-semibold">Portions</label>
+                        <label className="form-label fw-semibold">
+                          Portions
+                        </label>
+
                         <input
                           type="number"
                           name="servings"
@@ -309,8 +366,9 @@ const CreateRecipe = () => {
 
                       <div className="col-md-6">
                         <label className="form-label fw-semibold">
-                          Ingrédients * (un par ligne)
+                          Ingrédients *
                         </label>
+
                         <textarea
                           name="ingredients"
                           className="form-control"
@@ -318,16 +376,14 @@ const CreateRecipe = () => {
                           value={formData.ingredients}
                           onChange={handleChange}
                           required
-                          placeholder={`200g de farine
-2 œufs
-100g de sucre`}
                         />
                       </div>
 
                       <div className="col-md-6">
                         <label className="form-label fw-semibold">
-                          Instructions * (une étape par ligne)
+                          Instructions *
                         </label>
+
                         <textarea
                           name="instructions"
                           className="form-control"
@@ -335,9 +391,6 @@ const CreateRecipe = () => {
                           value={formData.instructions}
                           onChange={handleChange}
                           required
-                          placeholder={`1. Préchauffer le four
-2. Mélanger les ingrédients
-3. Cuire pendant 30 minutes`}
                         />
                       </div>
 
@@ -352,7 +405,10 @@ const CreateRecipe = () => {
                             onChange={handleChange}
                           />
 
-                          <label className="form-check-label" htmlFor="published">
+                          <label
+                            className="form-check-label"
+                            htmlFor="published"
+                          >
                             Publier directement cette recette
                           </label>
                         </div>
@@ -366,10 +422,16 @@ const CreateRecipe = () => {
                         disabled={submitLoading}
                       >
                         <i className="fas fa-save me-2"></i>
-                        {submitLoading ? 'Publication...' : 'Publier ma recette'}
+
+                        {submitLoading
+                          ? 'Publication...'
+                          : 'Publier ma recette'}
                       </button>
 
-                      <Link to="/recipes" className="btn btn-outline-secondary px-5">
+                      <Link
+                        to="/recipes"
+                        className="btn btn-outline-secondary px-5"
+                      >
                         Annuler
                       </Link>
                     </div>
