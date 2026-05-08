@@ -1,22 +1,39 @@
-import axios from "../api/axios";
+import api from '../api/axios'
 
-const userService = {
-  getMyProfile: () => axios.get("/users/me"),
-
-  updateMyProfile: (data) => axios.put("/users/me", data),
-
-  uploadAvatar: (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    return axios.post("/users/me/avatar", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+export const userService = {
+  getMyProfile: async () => {
+    const response = await api.get('/users/profile')
+    return response.data
   },
 
-  getPublicProfile: (username) => axios.get(`/users/${username}`),
-};
+  getPublicProfile: async (username) => {
+    const response = await api.get(`/users/profile/${username}`)
+    return response.data
+  },
 
-export default userService;
+  updateProfile: async (profileData) => {
+    const formData = new FormData()
+
+    if (profileData.bio !== undefined) {
+      formData.append('bio', profileData.bio)
+    }
+
+    if (profileData.avatar) {
+      formData.append('avatar', profileData.avatar)
+    }
+
+    const response = await api.put(
+      '/users/profile',
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+
+    return response.data
+  }
+}
+
+export default userService
