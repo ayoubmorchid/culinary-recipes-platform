@@ -17,8 +17,13 @@ export const recipeService = {
   },
 
   getRecipeBySlug: async (slug) => {
-    const response = await api.get(`/recipes/slug/${slug}`)
-    return response.data
+    try {
+      const response = await api.get(`/recipes/slug/${slug}`)
+      return response.data
+    } catch (error) {
+      const fallback = await api.get(`/recipes/${slug}`)
+      return fallback.data
+    }
   },
 
   createRecipe: async (recipeData) => {
@@ -64,33 +69,58 @@ export const recipeService = {
       formData.append('image', recipeData.image)
     }
 
-    const response = await api.put(`/recipes/slug/${slug}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    try {
+      const response = await api.put(`/recipes/slug/${slug}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
 
-    return response.data
+      return response.data
+    } catch (error) {
+      const fallback = await api.put(`/recipes/${slug}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+
+      return fallback.data
+    }
   },
 
   deleteRecipe: async (slug) => {
-    const response = await api.delete(`/recipes/slug/${slug}`)
-    return response.data
+    try {
+      const response = await api.delete(`/recipes/slug/${slug}`)
+      return response.data
+    } catch (error) {
+      const fallback = await api.delete(`/recipes/${slug}`)
+      return fallback.data
+    }
   },
 
   getCategories: async () => {
-    const response = await api.get('/recipes/categories')
+    const response = await api.get('/categories')
     return response.data
   },
 
   getLatestRecipes: async (limit = 8) => {
-    const response = await api.get(`/recipes/latest?limit=${limit}`)
-    return response.data
+    try {
+      const response = await api.get(`/recipes/latest?limit=${limit}`)
+      return response.data
+    } catch (error) {
+      const fallback = await api.get('/recipes')
+      return fallback.data
+    }
   },
 
   getTopRated: async (limit = 6) => {
-    const response = await api.get(`/recipes/top-rated?limit=${limit}`)
-    return response.data
+    try {
+      const response = await api.get(`/recipes/top-rated?limit=${limit}`)
+      return response.data
+    } catch (error) {
+      const fallback = await api.get('/recipes')
+      return fallback.data
+    }
   },
 
   getMyRecipes: async (page = 1, size = 12) => {
