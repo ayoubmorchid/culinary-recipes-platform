@@ -1,11 +1,19 @@
 package com.culinaryrecipes.recipes;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class RatingDto {
-    private int value;
-    private String username;
+
+    private Long id;
+    private Integer rating;
+    private LocalDateTime createdAt;
+    private Long userId;
+    private Long recipeId;
 }

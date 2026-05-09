@@ -3,8 +3,13 @@ package com.culinaryrecipes.recipes;
 import com.culinaryrecipes.users.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "comments")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,14 +21,23 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 1000)
-    private String content;
-
-    @ManyToOne
-    @JoinColumn(name = "recipe_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipe_id", nullable = false)
     private Recipe recipe;
 
-    @ManyToOne
-    @JoinColumn(name = "author_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
+
+    @Builder.Default
+    private boolean isApproved = true;
 }

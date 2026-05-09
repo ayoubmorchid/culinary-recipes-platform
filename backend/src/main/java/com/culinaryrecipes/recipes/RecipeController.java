@@ -1,8 +1,14 @@
 package com.culinaryrecipes.recipes;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
 @RestController
@@ -11,44 +17,90 @@ import java.util.List;
 public class RecipeController {
 
     private final RecipeService recipeService;
-
-    @GetMapping("/{slug}")
-    public ResponseEntity<RecipeDto> getRecipeBySlug(@PathVariable String slug) {
-        return ResponseEntity.ok(recipeService.getRecipeBySlug(slug));
-    }
+    private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<RecipeDto>> getAllRecipes() {
-        return ResponseEntity.ok(recipeService.getAllRecipes());
+    public ResponseEntity<Page<RecipeDto>> getRecipes(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) Long categoryId
+    ) {
+        return ResponseEntity.ok(
+                recipeService.searchRecipes(search, categoryId, page, size)
+        );
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<RecipeDto>> searchRecipes(
-            @RequestParam String query) {
-        return ResponseEntity.ok(recipeService.searchRecipes(query));
+    @GetMapping("/slug/{slug}")
+    public ResponseEntity<RecipeDto> getRecipeBySlug(
+            @PathVariable String slug
+    ) {
+        return ResponseEntity.ok(
+                recipeService.getRecipeBySlug(slug, null)
+        );
     }
 
-    @PostMapping
-    public ResponseEntity<RecipeDto> createRecipe(@RequestBody RecipeRequest request) {
-        return ResponseEntity.ok(recipeService.createRecipe(request));
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<RecipeDto> createRecipe(
+            @AuthenticationPrincipal UserDetails principal,
+            @Valid @ModelAttribute RecipeRequest request,
+            @RequestParam(value = "image", required = false) MultipartFile image
+    ) {
+        return ResponseEntity.ok(
+                recipeService.createRecipe(request, image, principal.getUsername())
+        );
     }
 
-    @GetMapping("/author/{username}")
-    public ResponseEntity<List<RecipeDto>> getRecipesByAuthor(
-            @PathVariable String username) {
-        return ResponseEntity.ok(recipeService.getRecipesByAuthor(username));
-    }
-
-    @PutMapping("/{slug}")
+    @PutMapping(value = "/{slug}", consumes = "multipart/form-data")
     public ResponseEntity<RecipeDto> updateRecipe(
+            @AuthenticationPrincipal UserDetails principal,
             @PathVariable String slug,
-            @RequestBody RecipeRequest request) {
-        return ResponseEntity.ok(recipeService.updateRecipe(slug, request));
+            @Valid @ModelAttribute RecipeRequest request,
+            @RequestParam(value = "image", required = false) MultipartFile image
+    ) {
+        return ResponseEntity.ok(
+                recipeService.updateRecipe(slug, request, image, principal.getUsername())
+        );
     }
 
     @DeleteMapping("/{slug}")
-    public ResponseEntity<String> deleteRecipe(@PathVariable String slug) {
-        recipeService.deleteRecipe(slug);
-        return ResponseEntity.ok("Recipe deleted successfully");
+    public ResponseEntity<Void> deleteRecipe(
+            @AuthenticationPrincipal UserDetails principal,
+            @PathVariable String slug
+    ) {
+        recipeService.deleteRecipe(slug, principal.getUsername());
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<CategoryDto>> getCategories() {
+        return ResponseEntity.ok(
+                categoryService.getAllCategories()
+        );
+    }
+
+    @GetMapping("/latest")
+    public ResponseEntity<List<RecipeDto>> getLatestRecipes() {
+        return ResponseEntity.ok(
+                recipeService.getLatestRecipes()
+        );
+    }
+
+    @GetMapping("/top-rated")
+    public ResponseEntity<List<RecipeDto>> getTopRatedRecipes() {
+        return ResponseEntity.ok(
+                recipeService.getTopRatedRecipes()
+        );
+    }
+
+    @GetMapping("/my-recipes")
+    public ResponseEntity<Page<RecipeDto>> getMyRecipes(
+            @AuthenticationPrincipal UserDetails principal,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "12") int size
+    ) {
+        return ResponseEntity.ok(
+                recipeService.getMyRecipesByUsername(principal.getUsername(), page, size)
+        );
     }
 }

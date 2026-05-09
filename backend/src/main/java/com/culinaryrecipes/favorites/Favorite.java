@@ -4,8 +4,14 @@ import com.culinaryrecipes.recipes.Recipe;
 import com.culinaryrecipes.users.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "favorites", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "recipe_id"})
+})
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,4 +30,7 @@ public class Favorite {
     @ManyToOne
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

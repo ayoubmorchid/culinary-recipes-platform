@@ -1,12 +1,22 @@
 package com.culinaryrecipes.favorites;
 
-import lombok.Builder;
-import lombok.Data;
+import com.culinaryrecipes.recipes.RecipeDto;
+import lombok.*;
 
-@Data
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class FavoriteDto {
+
     private Long id;
-    private String recipeTitle;
-    private String recipeSlug;
+    private LocalDateTime createdAt;
+
+    private Long userId;
+    private Long recipeId;
+
+    private RecipeDto recipe;
 }
