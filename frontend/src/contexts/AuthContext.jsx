@@ -23,42 +23,24 @@ export const AuthProvider = ({ children }) => {
   })
 
   useEffect(() => {
-    const initAuth = () => {
-      try {
-        const token = localStorage.getItem('token')
-        const storedUser = localStorage.getItem('user')
+    try {
+      const token = localStorage.getItem('token')
+      const storedUser = localStorage.getItem('user')
 
-        if (token && storedUser) {
-          const parsedUser = JSON.parse(storedUser)
-          setUser(parsedUser)
-          api.defaults.headers.common.Authorization = `Bearer ${token}`
-        }
-      } catch (error) {
-        console.error('Auth init error:', error)
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
-        delete api.defaults.headers.common.Authorization
-      } finally {
-        setLoading(false)
+      if (token && storedUser) {
+        const parsedUser = JSON.parse(storedUser)
+        setUser(parsedUser)
+        api.defaults.headers.common.Authorization = `Bearer ${token}`
       }
+    } catch (error) {
+      console.error('Auth init error:', error)
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      delete api.defaults.headers.common.Authorization
+    } finally {
+      setLoading(false)
     }
-
-    initAuth()
   }, [])
-
-  const getErrorMessage = (error, fallback) => {
-    const data = error.response?.data
-
-    if (typeof data === 'string') return data
-    if (data?.message) return data.message
-    if (data?.error) return data.error
-
-    if (data && typeof data === 'object') {
-      return Object.values(data).join(', ')
-    }
-
-    return fallback
-  }
 
   const showAlert = (message, type = 'success') => {
     setAlert({ show: true, message, type })
@@ -82,7 +64,7 @@ export const AuthProvider = ({ children }) => {
       showAlert('Connexion réussie !', 'success')
       return { success: true }
     } catch (error) {
-      const message = getErrorMessage(error, 'Erreur de connexion')
+      const message = error.response?.data?.message || 'Erreur de connexion'
       showAlert(message, 'danger')
       return { success: false, error: message }
     }
@@ -102,7 +84,7 @@ export const AuthProvider = ({ children }) => {
       showAlert('Inscription réussie !', 'success')
       return { success: true }
     } catch (error) {
-      const message = getErrorMessage(error, "Erreur d'inscription")
+      const message = error.response?.data?.message || "Erreur d'inscription"
       showAlert(message, 'danger')
       return { success: false, error: message }
     }
