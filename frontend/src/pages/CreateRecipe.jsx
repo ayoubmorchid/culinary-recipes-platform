@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-
+import React, { useState, useEffect } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
 import { recipeService } from '../services/recipeService'
+import { useAuth } from '../hooks/useAuth'
 
 const CreateRecipe = () => {
-  const navigate = useNavigate()
-
   const [formData, setFormData] = useState({
     title: '',
     categoryId: '',
@@ -24,6 +22,9 @@ const CreateRecipe = () => {
   const [submitLoading, setSubmitLoading] = useState(false)
   const [error, setError] = useState('')
 
+  const navigate = useNavigate()
+  const { user } = useAuth()
+
   useEffect(() => {
     loadCategories()
   }, [])
@@ -39,30 +40,15 @@ const CreateRecipe = () => {
   const loadCategories = async () => {
     try {
       const data = await recipeService.getCategories()
-
-      setCategories(
-        Array.isArray(data)
-          ? data
-          : data.content || []
-      )
-
-      setError('')
+      setCategories(data.content || data || [])
     } catch (error) {
       console.error('Erreur catégories:', error)
-
-      setCategories([
-        { id: 1, name: 'Entrées' },
-        { id: 2, name: 'Plats principaux' },
-        { id: 3, name: 'Desserts' },
-        { id: 4, name: 'Boissons' }
-      ])
-
-      setError('')
+      setError('Impossible de charger les catégories.')
     }
   }
 
   const handleImageChange = (e) => {
-    const file = e.target.files?.[0]
+    const file = e.target.files[0]
 
     if (!file) return
 
@@ -82,7 +68,6 @@ const CreateRecipe = () => {
 
     setError('')
     setImagePreview(URL.createObjectURL(file))
-
     setFormData((prev) => ({
       ...prev,
       image: file
@@ -128,6 +113,18 @@ const CreateRecipe = () => {
       return 'Les instructions sont obligatoires.'
     }
 
+    if (Number(formData.preparationTime) < 0) {
+      return 'Le temps de préparation ne peut pas être négatif.'
+    }
+
+    if (Number(formData.cookingTime) < 0) {
+      return 'Le temps de cuisson ne peut pas être négatif.'
+    }
+
+    if (Number(formData.servings) < 1) {
+      return 'Le nombre de portions doit être au moins 1.'
+    }
+
     return ''
   }
 
@@ -141,22 +138,20 @@ const CreateRecipe = () => {
       return
     }
 
-    try {
-      setSubmitLoading(true)
-      setError('')
+    setSubmitLoading(true)
+    setError('')
 
+    try {
       const payload = {
         ...formData,
-        categoryId: Number(formData.categoryId),
+        categoryId: formData.categoryId ? Number(formData.categoryId) : null,
         preparationTime: Number(formData.preparationTime || 0),
         cookingTime: Number(formData.cookingTime || 0),
         servings: Number(formData.servings || 1)
       }
 
-      const createdRecipe =
-        await recipeService.createRecipe(payload)
-
-      navigate(`/recipes/${createdRecipe.slug}`)
+      await recipeService.createRecipe(payload)
+      navigate('/my-recipes')
     } catch (error) {
       console.error('Erreur création:', error)
 
@@ -183,17 +178,14 @@ const CreateRecipe = () => {
                   Nouvelle Recette
                 </h2>
 
-                <Link
-                  to="/recipes"
-                  className="btn btn-outline-secondary"
-                >
+                <Link to="/recipes" className="btn btn-outline-secondary">
                   <i className="fas fa-arrow-left me-2"></i>
                   Retour
                 </Link>
               </div>
 
               {error && (
-                <div className="alert alert-danger">
+                <div className="alert alert-danger" role="alert">
                   {error}
                 </div>
               )}
@@ -204,50 +196,51 @@ const CreateRecipe = () => {
                 <div className="row g-0">
                   <div className="col-lg-4 border-end">
                     <div className="p-5 text-center">
-                      <label className="form-label fw-semibold mb-3 d-block">
-                        <i className="fas fa-image me-2"></i>
-                        Photo de la recette
-                      </label>
+                      <div className="mb-4">
+                        <label className="form-label fw-semibold mb-3 d-block">
+                          <i className="fas fa-image me-2"></i>
+                          Photo de la recette
+                        </label>
 
-                      <div
-                        className="image-upload-area border rounded-4 p-5 mb-3 position-relative overflow-hidden"
-                        style={{
-                          minHeight: '300px',
-                          backgroundColor: '#f8f9fa',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        {imagePreview ? (
-                          <img
-                            src={imagePreview}
-                            alt="Preview"
-                            className="img-fluid rounded-3 shadow"
-                            style={{
-                              maxHeight: '300px',
-                              objectFit: 'cover'
-                            }}
+                        <div
+                          className="image-upload-area border border-dashed rounded-4 p-5 mb-3 position-relative overflow-hidden"
+                          style={{
+                            minHeight: '300px',
+                            backgroundColor: '#f8f9fa',
+                            cursor: 'pointer'
+                          }}
+                        >
+                          {imagePreview ? (
+                            <img
+                              src={imagePreview}
+                              alt="Preview"
+                              className="img-fluid rounded-3 shadow"
+                              style={{
+                                maxHeight: '300px',
+                                objectFit: 'cover'
+                              }}
+                            />
+                          ) : (
+                            <>
+                              <i className="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                              <p className="text-muted mb-0">
+                                Cliquez pour ajouter une image
+                              </p>
+                            </>
+                          )}
+
+                          <input
+                            type="file"
+                            className="position-absolute top-0 start-0 w-100 h-100 opacity-0"
+                            accept="image/*"
+                            onChange={handleImageChange}
                           />
-                        ) : (
-                          <>
-                            <i className="fas fa-cloud-upload-alt fa-3x text-muted mb-3"></i>
+                        </div>
 
-                            <p className="text-muted mb-0">
-                              Cliquez pour ajouter une image
-                            </p>
-                          </>
-                        )}
-
-                        <input
-                          type="file"
-                          className="position-absolute top-0 start-0 w-100 h-100 opacity-0"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                        />
+                        <small className="text-muted">
+                          JPG, PNG, WEBP ou GIF jusqu'à 5MB
+                        </small>
                       </div>
-
-                      <small className="text-muted">
-                        JPG, PNG, WEBP ou GIF jusqu'à 5MB
-                      </small>
                     </div>
                   </div>
 
@@ -257,7 +250,6 @@ const CreateRecipe = () => {
                         <label className="form-label fw-semibold">
                           Titre *
                         </label>
-
                         <input
                           type="text"
                           name="title"
@@ -273,7 +265,6 @@ const CreateRecipe = () => {
                         <label className="form-label fw-semibold">
                           Catégorie *
                         </label>
-
                         <select
                           name="categoryId"
                           className="form-select form-select-lg"
@@ -281,22 +272,9 @@ const CreateRecipe = () => {
                           onChange={handleChange}
                           required
                         >
-                          <option value="">
-                            Choisir une catégorie
-                          </option>
-
-                          {categories.map((cat, index) => (
-                            <option
-                              key={
-                                cat.id ||
-                                cat.slug ||
-                                index
-                              }
-                              value={
-                                cat.id ||
-                                index + 1
-                              }
-                            >
+                          <option value="">Choisir une catégorie</option>
+                          {categories.map((cat) => (
+                            <option key={cat.id} value={cat.id}>
                               {cat.name}
                             </option>
                           ))}
@@ -307,7 +285,6 @@ const CreateRecipe = () => {
                         <label className="form-label fw-semibold">
                           Description *
                         </label>
-
                         <textarea
                           name="description"
                           className="form-control"
@@ -315,7 +292,7 @@ const CreateRecipe = () => {
                           value={formData.description}
                           onChange={handleChange}
                           required
-                          placeholder="Décrivez votre recette..."
+                          placeholder="Décrivez votre recette en quelques mots..."
                         />
                       </div>
 
@@ -323,7 +300,6 @@ const CreateRecipe = () => {
                         <label className="form-label fw-semibold">
                           Préparation (min)
                         </label>
-
                         <input
                           type="number"
                           name="preparationTime"
@@ -338,7 +314,6 @@ const CreateRecipe = () => {
                         <label className="form-label fw-semibold">
                           Cuisson (min)
                         </label>
-
                         <input
                           type="number"
                           name="cookingTime"
@@ -353,7 +328,6 @@ const CreateRecipe = () => {
                         <label className="form-label fw-semibold">
                           Portions
                         </label>
-
                         <input
                           type="number"
                           name="servings"
@@ -366,9 +340,8 @@ const CreateRecipe = () => {
 
                       <div className="col-md-6">
                         <label className="form-label fw-semibold">
-                          Ingrédients *
+                          Ingrédients * (un par ligne)
                         </label>
-
                         <textarea
                           name="ingredients"
                           className="form-control"
@@ -376,14 +349,16 @@ const CreateRecipe = () => {
                           value={formData.ingredients}
                           onChange={handleChange}
                           required
+                          placeholder={`200g de farine
+2 œufs
+100g de sucre`}
                         />
                       </div>
 
                       <div className="col-md-6">
                         <label className="form-label fw-semibold">
-                          Instructions *
+                          Instructions * (une étape par ligne)
                         </label>
-
                         <textarea
                           name="instructions"
                           className="form-control"
@@ -391,6 +366,9 @@ const CreateRecipe = () => {
                           value={formData.instructions}
                           onChange={handleChange}
                           required
+                          placeholder={`1. Préchauffer le four.
+2. Mélanger les ingrédients.
+3. Cuire pendant 30 minutes.`}
                         />
                       </div>
 
@@ -404,7 +382,6 @@ const CreateRecipe = () => {
                             checked={formData.published}
                             onChange={handleChange}
                           />
-
                           <label
                             className="form-check-label"
                             htmlFor="published"
@@ -422,16 +399,10 @@ const CreateRecipe = () => {
                         disabled={submitLoading}
                       >
                         <i className="fas fa-save me-2"></i>
-
-                        {submitLoading
-                          ? 'Publication...'
-                          : 'Publier ma recette'}
+                        {submitLoading ? 'Publication...' : 'Publier ma recette'}
                       </button>
 
-                      <Link
-                        to="/recipes"
-                        className="btn btn-outline-secondary px-5"
-                      >
+                      <Link to="/recipes" className="btn btn-outline-secondary px-5">
                         Annuler
                       </Link>
                     </div>
