@@ -1,5 +1,6 @@
 package com.culinaryrecipes.users;
 
+import com.culinaryrecipes.enums.Role;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -9,20 +10,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProfileDto {
+public class UserDto {
 
     private Long id;
-
     private String username;
     private String email;
     private String firstName;
     private String lastName;
-
-    private String bio;
-    private String avatar;
-
-    private Long recipeCount;
-
+    private Role role;
     private LocalDateTime dateJoined;
-    private LocalDateTime updatedAt;
 }
