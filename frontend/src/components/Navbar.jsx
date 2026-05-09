@@ -10,21 +10,15 @@ const Navbar = () => {
 
   const handleSearch = (e) => {
     e.preventDefault()
-
-    const value = searchTerm.trim()
-    if (!value) return
-
-    navigate(`/search?q=${encodeURIComponent(value)}`)
-    setSearchTerm('')
+    if (searchTerm.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchTerm)}`)
+    }
   }
 
   const handleLogout = () => {
     logout()
     navigate('/')
   }
-
-  const isActive = (path) =>
-    location.pathname === path ? 'active fw-semibold' : ''
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
@@ -33,28 +27,19 @@ const Navbar = () => {
           Culinary Recipes
         </Link>
 
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Afficher le menu"
-        >
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span className="navbar-toggler-icon"></span>
         </button>
 
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto">
             <li className="nav-item">
-              <Link className={`nav-link ${isActive('/')}`} to="/">
+              <Link className={`nav-link ${location.pathname === '/' ? 'active fw-semibold' : ''}`} to="/">
                 Accueil
               </Link>
             </li>
-
             <li className="nav-item">
-              <Link className={`nav-link ${isActive('/recipes')}`} to="/recipes">
+              <Link className={`nav-link ${location.pathname === '/recipes' ? 'active fw-semibold' : ''}`} to="/recipes">
                 Recettes
               </Link>
             </li>
@@ -62,20 +47,16 @@ const Navbar = () => {
             {isAuthenticated && (
               <>
                 <li className="nav-item">
-                  <Link className={`nav-link ${isActive('/my-recipes')}`} to="/my-recipes">
-                    Mes Recettes
-                  </Link>
+                  <Link className="nav-link" to="/my-recipes">Mes Recettes</Link>
                 </li>
-
                 <li className="nav-item">
-                  <Link className={`nav-link ${isActive('/favorites')}`} to="/favorites">
-                    Favoris
-                  </Link>
+                  <Link className="nav-link" to="/favorites">Favoris</Link>
                 </li>
               </>
             )}
           </ul>
 
+          {/* Search */}
           <form onSubmit={handleSearch} className="d-flex me-3">
             <input
               className="form-control me-2"
@@ -84,57 +65,37 @@ const Navbar = () => {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-
             <button className="btn btn-outline-success" type="submit">
-              <i className="fas fa-search"></i>
+              🔍
             </button>
           </form>
 
+          {/* Auth */}
           <ul className="navbar-nav">
             {!isAuthenticated ? (
               <>
                 <li className="nav-item">
-                  <Link className={`nav-link ${isActive('/login')}`} to="/login">
-                    Connexion
-                  </Link>
+                  <Link className="nav-link" to="/login">Connexion</Link>
                 </li>
-
                 <li className="nav-item">
-                  <Link className={`nav-link ${isActive('/register')}`} to="/register">
-                    Inscription
-                  </Link>
+                  <Link className="nav-link" to="/register">Inscription</Link>
                 </li>
               </>
             ) : (
               <li className="nav-item dropdown">
-                <button
-                  className="nav-link dropdown-toggle btn btn-link text-decoration-none"
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
+                <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                   {user?.username || 'User'}
-                </button>
-
-                <ul className="dropdown-menu dropdown-menu-end">
+                </a>
+                <ul className="dropdown-menu">
                   <li>
-                    <Link className="dropdown-item" to="/profile">
-                      Mon Profil
-                    </Link>
+                    <Link className="dropdown-item" to="/profile">Mon Profil</Link>
                   </li>
-
                   {user?.role === 'ADMIN' && (
                     <li>
-                      <Link className="dropdown-item" to="/admin">
-                        Admin
-                      </Link>
+                      <Link className="dropdown-item" to="/admin">Admin</Link>
                     </li>
                   )}
-
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-
+                  <li><hr className="dropdown-divider" /></li>
                   <li>
                     <button className="dropdown-item text-danger" onClick={handleLogout}>
                       Déconnexion

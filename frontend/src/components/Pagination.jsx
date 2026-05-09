@@ -1,14 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const Pagination = ({ currentPage = 1, totalPages = 1, basePath = '' }) => {
+const Pagination = ({ currentPage, totalPages, basePath = '' }) => {
   if (totalPages <= 1) return null
-
-  const buildPageUrl = (page) => {
-    const safePage = Math.max(1, Math.min(page, totalPages))
-    const separator = basePath.includes('?') ? '&' : '?'
-    return `${basePath}${separator}page=${safePage}`
-  }
 
   const getPageNumbers = () => {
     const pages = []
@@ -29,26 +23,35 @@ const Pagination = ({ currentPage = 1, totalPages = 1, basePath = '' }) => {
 
   return (
     <nav aria-label="Pagination des recettes">
-      <ul className="pagination justify-content-center flex-wrap gap-1">
-        <li className={`page-item ${currentPage <= 1 ? 'disabled' : ''}`}>
-          <Link className="page-link" to={buildPageUrl(currentPage - 1)}>
-            <i className="fas fa-chevron-left me-1"></i>
-            Précédent
+      <ul className="pagination justify-content-center">
+        <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
+          <Link
+            className="page-link"
+            to={`${basePath}?page=${currentPage - 1}`}
+            aria-label="Page précédente"
+          >
+            <i className="fas fa-chevron-left me-1"></i> Précédent
           </Link>
         </li>
 
         {getPageNumbers().map((page) => (
-          <li key={page} className={`page-item ${page === currentPage ? 'active' : ''}`}>
-            <Link className="page-link" to={buildPageUrl(page)}>
+          <li
+            key={page}
+            className={`page-item ${page === currentPage ? 'active' : ''}`}
+          >
+            <Link className="page-link" to={`${basePath}?page=${page}`}>
               {page}
             </Link>
           </li>
         ))}
 
-        <li className={`page-item ${currentPage >= totalPages ? 'disabled' : ''}`}>
-          <Link className="page-link" to={buildPageUrl(currentPage + 1)}>
-            Suivant
-            <i className="fas fa-chevron-right ms-1"></i>
+        <li className={`page-item ${currentPage === totalPages ? 'disabled' : ''}`}>
+          <Link
+            className="page-link"
+            to={`${basePath}?page=${currentPage + 1}`}
+            aria-label="Page suivante"
+          >
+            Suivant <i className="fas fa-chevron-right ms-1"></i>
           </Link>
         </li>
       </ul>

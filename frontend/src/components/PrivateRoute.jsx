@@ -8,7 +8,7 @@ const PrivateRoute = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center min-vh-50 py-5">
+      <div className="loading">
         <div className="spinner-border text-success" role="status">
           <span className="visually-hidden">Chargement...</span>
         </div>
@@ -16,17 +16,8 @@ const PrivateRoute = ({ children }) => {
     )
   }
 
-  if (!isAuthenticated) {
-    return (
-      <Navigate
-        to="/login"
-        state={{ from: location }}
-        replace
-      />
-    )
-  }
-
-  return children
+  return isAuthenticated ? children : <Navigate to="/login" state={{ from: location }} replace />
 }
 
 export default PrivateRoute
+
