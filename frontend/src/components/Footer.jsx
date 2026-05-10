@@ -17,15 +17,9 @@ const Footer = () => {
             <div className="col-md-4">
               <h5>Navigation</h5>
               <ul>
-                <li>
-                  <Link to="/">Accueil</Link>
-                </li>
-                <li>
-                  <Link to="/recipes">Recettes</Link>
-                </li>
-                <li>
-                  <Link to="/search">Recherche</Link>
-                </li>
+                <li><Link to="/">Accueil</Link></li>
+                <li><Link to="/recipes">Recettes</Link></li>
+                <li><Link to="/search">Recherche</Link></li>
               </ul>
             </div>
 
