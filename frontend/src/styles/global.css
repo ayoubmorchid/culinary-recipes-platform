@@ -105,3 +105,65 @@ main {
   background: rgba(212, 175, 55, 0.12);
   color: var(--luxury-gold-soft);
 }
+
+/* HOME HERO */
+.luxury-hero {
+  padding: 6rem 0;
+  background:
+    linear-gradient(90deg, rgba(7, 7, 7, .96), rgba(7, 7, 7, .75)),
+    url("https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1600") center/cover;
+  border-bottom: 1px solid var(--luxury-border);
+}
+
+.luxury-badge,
+.luxury-mini-title {
+  display: inline-block;
+  color: var(--luxury-gold);
+  border: 1px solid var(--luxury-border);
+  background: rgba(212, 175, 55, 0.08);
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.luxury-hero-title {
+  font-size: clamp(2.4rem, 6vw, 5rem);
+  line-height: 1;
+  font-weight: 950;
+}
+
+.luxury-hero-text {
+  color: var(--luxury-muted);
+  font-size: 1.15rem;
+  max-width: 620px;
+  margin: 1.4rem 0 2rem;
+}
+
+.luxury-hero-card {
+  position: relative;
+  border-radius: 34px;
+  overflow: hidden;
+  min-height: 460px;
+  border: 1px solid var(--luxury-border);
+  box-shadow: 0 35px 80px rgba(0, 0, 0, .55);
+}
+
+.luxury-hero-card img {
+  width: 100%;
+  height: 460px;
+  object-fit: cover;
+}
+
+.luxury-hero-card-content {
+  position: absolute;
+  left: 1.5rem;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  padding: 1.4rem;
+  border-radius: 24px;
+  background: rgba(7, 7, 7, .72);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--luxury-border);
+}
