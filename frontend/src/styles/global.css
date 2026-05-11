@@ -477,3 +477,124 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 1.9rem;
   }
 }
+
+/* CREATE / EDIT RECIPE FORM */
+.luxury-form-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(212, 175, 55, 0.14), transparent 35%),
+    var(--luxury-bg);
+}
+
+.luxury-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.luxury-form-header h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 950;
+  margin-bottom: 0.5rem;
+}
+
+.luxury-form-header p {
+  color: var(--luxury-muted);
+  margin-bottom: 0;
+}
+
+.luxury-recipe-form {
+  background: linear-gradient(180deg, rgba(17, 17, 17, 0.96), rgba(24, 24, 24, 0.96));
+  border: 1px solid var(--luxury-border);
+  border-radius: 34px;
+  overflow: hidden;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.55);
+}
+
+.luxury-form-side {
+  padding: 3rem;
+  border-right: 1px solid var(--luxury-border);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.luxury-form-main {
+  padding: 3rem;
+}
+
+.luxury-image-upload {
+  position: relative;
+  min-height: 360px;
+  border: 1px dashed var(--luxury-border);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.04);
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: var(--luxury-muted);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.luxury-image-upload i {
+  font-size: 3rem;
+  color: var(--luxury-gold);
+  margin-bottom: 1rem;
+}
+
+.luxury-image-upload img {
+  width: 100%;
+  height: 360px;
+  object-fit: cover;
+}
+
+.luxury-image-upload input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.luxury-alert-danger {
+  background: rgba(220, 38, 38, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  color: #fecaca;
+  padding: 1rem 1.2rem;
+  border-radius: 18px;
+  margin-bottom: 1.5rem;
+}
+
+.luxury-check {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--luxury-muted);
+}
+
+.luxury-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--luxury-gold);
+}
+
+@media (max-width: 991px) {
+  .luxury-form-side {
+    border-right: none;
+    border-bottom: 1px solid var(--luxury-border);
+  }
+}
+
+@media (max-width: 768px) {
+  .luxury-form-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .luxury-form-side,
+  .luxury-form-main {
+    padding: 2rem;
+  }
+}
