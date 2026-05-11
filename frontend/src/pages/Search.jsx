@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import RecipeCard from '../components/RecipeCard'
+import { useLocation, Link } from 'react-router-dom'
 import Pagination from '../components/Pagination'
 import Loading from '../components/Loading'
 import { recipeService } from '../services/recipeService'
