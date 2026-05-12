@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Wrap poulet avocat</title>
+  <desc id="desc">Illustration culinaire d'un wrap poulet avocat.</desc>
+  <rect width="1200" height="800" fill="#f6efe7"/>
+  <ellipse cx="600" cy="435" rx="330" ry="205" fill="#fff9ef" stroke="#cbb79e" stroke-width="18"/>
+  <rect x="385" y="360" width="430" height="155" rx="78" fill="#e9c17a" transform="rotate(-13 600 438)"/>
+  <path d="M470 390l255 85" stroke="#f8ead0" stroke-width="50" stroke-linecap="round"/>
+  <g fill="#6ca653"><circle cx="520" cy="410" r="28"/><circle cx="665" cy="455" r="30"/></g>
+  <g fill="#d28d4b"><rect x="570" y="400" width="80" height="32" rx="15"/></g>
+  <text x="600" y="700" text-anchor="middle" font-family="Georgia, serif" font-size="54" fill="#403329">Wrap poulet avocat</text>
+</svg>

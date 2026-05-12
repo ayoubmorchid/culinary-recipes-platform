@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Mousse chocolat noir</title>
+  <desc id="desc">Illustration culinaire d'une mousse au chocolat noir.</desc>
+  <rect width="1200" height="800" fill="#f0e8df"/>
+  <path d="M430 335h340l-55 245H485z" fill="#c7b29b"/>
+  <ellipse cx="600" cy="335" rx="190" ry="65" fill="#eee3d6"/>
+  <ellipse cx="600" cy="325" rx="150" ry="50" fill="#3f241c"/>
+  <path d="M480 325c55-65 120 35 190-25 50-42 95 0 115 32" fill="none" stroke="#6d3b2c" stroke-width="35" stroke-linecap="round"/>
+  <g fill="#8d5a43"><rect x="540" y="250" width="25" height="95" rx="12" transform="rotate(-25 552 298)"/><rect x="650" y="245" width="25" height="95" rx="12" transform="rotate(25 662 292)"/></g>
+  <text x="600" y="700" text-anchor="middle" font-family="Georgia, serif" font-size="54" fill="#3b2d28">Mousse chocolat</text>
+</svg>

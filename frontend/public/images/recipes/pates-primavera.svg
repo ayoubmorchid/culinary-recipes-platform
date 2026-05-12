@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Pates primavera</title>
+  <desc id="desc">Illustration culinaire de pates aux legumes primavera.</desc>
+  <rect width="1200" height="800" fill="#f6efe5"/>
+  <ellipse cx="600" cy="430" rx="325" ry="205" fill="#fffaf1" stroke="#d0bba1" stroke-width="18"/>
+  <path d="M410 420c115-95 260 95 380 0M430 485c100-80 240 65 350-5" fill="none" stroke="#e8c15d" stroke-width="35" stroke-linecap="round"/>
+  <g fill="#dd523d"><circle cx="520" cy="410" r="24"/><circle cx="700" cy="475" r="22"/></g>
+  <g fill="#5c9a55"><rect x="600" y="350" width="75" height="28" rx="14"/><rect x="455" y="490" width="70" height="26" rx="13"/></g>
+  <text x="600" y="700" text-anchor="middle" font-family="Georgia, serif" font-size="54" fill="#3f3329">Pates primavera</text>
+</svg>
