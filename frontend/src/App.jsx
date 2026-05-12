@@ -105,7 +105,7 @@ function AppContent() {
 
       <Footer />
 
-      {alert?.show && <Alert alert={alert} />}
+      <Alert alert={alert || { show: false }} />
     </div>
   )
 }
