@@ -10,26 +10,19 @@ const Profile = () => {
   const { user, updateUser } = useAuth()
   const [profile, setProfile] = useState(null)
   const [editing, setEditing] = useState(false)
-  const [formData, setFormData] = useState({
-    bio: '',
-    avatar: null
-  })
+  const [formData, setFormData] = useState({ bio: '', avatar: null })
   const [loading, setLoading] = useState(true)
   const [uploadLoading, setUploadLoading] = useState(false)
   const [avatarPreview, setAvatarPreview] = useState(null)
   const [error, setError] = useState('')
 
   useEffect(() => {
-    if (user) {
-      loadProfile()
-    }
+    if (user) loadProfile()
   }, [user])
 
   useEffect(() => {
     return () => {
-      if (avatarPreview) {
-        URL.revokeObjectURL(avatarPreview)
-      }
+      if (avatarPreview) URL.revokeObjectURL(avatarPreview)
     }
   }, [avatarPreview])
 
@@ -59,13 +52,7 @@ const Profile = () => {
       })
     } catch (error) {
       console.error('Erreur chargement profil:', error)
-
-      const message =
-        error.response?.data?.message ||
-        error.response?.data?.error ||
-        'Erreur lors du chargement du profil.'
-
-      setError(message)
+      setError('Erreur lors du chargement du profil.')
     } finally {
       setLoading(false)
     }
@@ -73,7 +60,6 @@ const Profile = () => {
 
   const handleAvatarChange = (e) => {
     const file = e.target.files?.[0]
-
     if (!file) return
 
     if (!file.type.startsWith('image/')) {
@@ -86,25 +72,18 @@ const Profile = () => {
       return
     }
 
-    if (avatarPreview) {
-      URL.revokeObjectURL(avatarPreview)
-    }
+    if (avatarPreview) URL.revokeObjectURL(avatarPreview)
 
     setError('')
     setAvatarPreview(URL.createObjectURL(file))
-    setFormData((prev) => ({
-      ...prev,
-      avatar: file
-    }))
+    setFormData((prev) => ({ ...prev, avatar: file }))
   }
 
   const handleEditToggle = () => {
     setEditing((prev) => !prev)
 
     if (editing) {
-      if (avatarPreview) {
-        URL.revokeObjectURL(avatarPreview)
-      }
+      if (avatarPreview) URL.revokeObjectURL(avatarPreview)
 
       setAvatarPreview(null)
       setFormData({
@@ -129,9 +108,7 @@ const Profile = () => {
         updateUser({ ...user, ...updatedProfile })
       }
 
-      if (avatarPreview) {
-        URL.revokeObjectURL(avatarPreview)
-      }
+      if (avatarPreview) URL.revokeObjectURL(avatarPreview)
 
       setEditing(false)
       setAvatarPreview(null)
@@ -141,13 +118,7 @@ const Profile = () => {
       })
     } catch (error) {
       console.error('Erreur mise à jour:', error)
-
-      const message =
-        error.response?.data?.message ||
-        error.response?.data?.error ||
-        'Erreur lors de la mise à jour du profil.'
-
-      setError(message)
+      setError('Erreur lors de la mise à jour du profil.')
     } finally {
       setUploadLoading(false)
     }
@@ -159,38 +130,29 @@ const Profile = () => {
     <div className="container py-5">
       <div className="row justify-content-center">
         <div className="col-lg-8">
-          <div className="card shadow-lg border-0">
-            <div className="card-header bg-white border-0 pb-0">
+          <div className="card luxury-simple-card">
+            <div className="card-header p-4">
               {error && (
-                <div className="alert alert-danger mt-3" role="alert">
+                <div className="luxury-alert-danger mb-4">
                   {error}
                 </div>
               )}
 
-              <div className="d-flex align-items-center">
+              <div className="d-flex align-items-center flex-column flex-md-row text-center text-md-start">
                 <div className="position-relative">
                   <img
                     src={getAvatarUrl()}
                     alt="Avatar"
-                    className="rounded-circle"
+                    className="profile-avatar"
                     onError={(e) => {
                       e.currentTarget.onerror = null
                       e.currentTarget.src = '/default-avatar.png'
                     }}
-                    style={{
-                      width: '120px',
-                      height: '120px',
-                      objectFit: 'cover'
-                    }}
                   />
 
                   {editing && (
-                    <label
-                      htmlFor="avatar-upload"
-                      className="position-absolute bottom-0 end-0 bg-success border border-white rounded-circle p-2"
-                      style={{ cursor: 'pointer' }}
-                    >
-                      <i className="fas fa-camera fs-6 text-white"></i>
+                    <label htmlFor="avatar-upload" className="profile-camera-btn">
+                      <i className="fas fa-camera"></i>
 
                       <input
                         id="avatar-upload"
@@ -203,25 +165,30 @@ const Profile = () => {
                   )}
                 </div>
 
-                <div className="ms-4">
+                <div className="ms-md-4 mt-3 mt-md-0">
                   <h2 className="mb-1">{user?.username || user?.email}</h2>
-                  <p className="text-muted mb-1">
+
+                  <p className="text-muted mb-2">
                     {user?.role === 'ADMIN' ? 'Administrateur' : 'Membre'}
                   </p>
-                  <span className="badge bg-success">
+
+                  <span className="badge">
                     {profile?.recipeCount || 0} recettes publiées
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="card-body p-5">
+            <div className="card-body p-4 p-md-5">
               {editing ? (
                 <form onSubmit={handleUpdate}>
                   <div className="mb-4">
-                    <label className="form-label fw-semibold">Biographie</label>
+                    <label className="luxury-form-label">
+                      Biographie
+                    </label>
+
                     <textarea
-                      className="form-control"
+                      className="form-control luxury-input"
                       rows="4"
                       name="bio"
                       value={formData.bio}
@@ -235,10 +202,10 @@ const Profile = () => {
                     />
                   </div>
 
-                  <div className="d-flex gap-3">
+                  <div className="d-flex flex-column flex-md-row gap-3">
                     <button
                       type="submit"
-                      className="btn btn-success flex-grow-1"
+                      className="btn luxury-main-btn flex-grow-1"
                       disabled={uploadLoading}
                     >
                       <i className="fas fa-save me-2"></i>
@@ -247,7 +214,7 @@ const Profile = () => {
 
                     <button
                       type="button"
-                      className="btn btn-outline-secondary"
+                      className="btn luxury-secondary-btn"
                       onClick={handleEditToggle}
                       disabled={uploadLoading}
                     >
@@ -259,24 +226,25 @@ const Profile = () => {
                 <>
                   <div className="mb-4">
                     <h5>
-                      <i className="fas fa-info-circle me-2 text-muted"></i>
+                      <i className="fas fa-info-circle me-2"></i>
                       À propos
                     </h5>
-                    <p className="text-muted">
+
+                    <p className="text-muted mb-0">
                       {profile?.bio || 'Aucune biographie.'}
                     </p>
                   </div>
 
-                  <div className="d-flex gap-3">
+                  <div className="d-flex flex-column flex-md-row gap-3">
                     <button
-                      className="btn btn-success"
+                      className="btn luxury-main-btn"
                       onClick={handleEditToggle}
                     >
                       <i className="fas fa-edit me-2"></i>
                       Modifier profil
                     </button>
 
-                    <Link to="/my-recipes" className="btn btn-outline-success">
+                    <Link to="/my-recipes" className="btn luxury-secondary-btn">
                       <i className="fas fa-drumstick-bite me-2"></i>
                       Mes recettes
                     </Link>
