@@ -20,11 +20,7 @@ export const userService = {
       formData.append('avatar', profileData.avatar)
     }
 
-    const response = await api.put('/users/profile', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    const response = await api.put('/users/profile', formData)
 
     return response.data
   },

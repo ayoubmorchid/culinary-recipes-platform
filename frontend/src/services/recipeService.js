@@ -26,11 +26,13 @@ export const recipeService = {
     formData.append('description', recipeData.description)
     formData.append('ingredients', recipeData.ingredients)
     formData.append('instructions', recipeData.instructions)
+    formData.append('preparationTime', recipeData.preparationTime ?? 0)
+    formData.append('cookingTime', recipeData.cookingTime ?? 0)
+    formData.append('servings', recipeData.servings ?? 1)
+    formData.append('published', recipeData.published ?? true)
     if (recipeData.image) formData.append('image', recipeData.image)
     
-    const response = await api.post('/recipes', formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    })
+    const response = await api.post('/recipes', formData)
     return response.data
   },
 
@@ -43,17 +45,19 @@ export const recipeService = {
     formData.append('description', recipeData.description)
     formData.append('ingredients', recipeData.ingredients)
     formData.append('instructions', recipeData.instructions)
+    formData.append('preparationTime', recipeData.preparationTime ?? 0)
+    formData.append('cookingTime', recipeData.cookingTime ?? 0)
+    formData.append('servings', recipeData.servings ?? 1)
+    formData.append('published', recipeData.published ?? true)
     if (recipeData.image) formData.append('image', recipeData.image)
     
-    const response = await api.put(`/recipes/slug/${slug}`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' }
-    })
+    const response = await api.put(`/recipes/${slug}`, formData)
     return response.data
   },
 
   // Delete recipe by slug
   deleteRecipe: async (slug) => {
-    const response = await api.delete(`/recipes/slug/${slug}`)
+    const response = await api.delete(`/recipes/${slug}`)
     return response.data
   },
 
