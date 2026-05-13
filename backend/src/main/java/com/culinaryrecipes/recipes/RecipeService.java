@@ -35,6 +35,7 @@ public class RecipeService {
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
     private final FavoriteRepository favoriteRepository;
+    private final RatingRepository ratingRepository;
     private final FileStorageService fileStorageService;
 
     @Transactional(readOnly = true)
@@ -308,15 +309,19 @@ public class RecipeService {
     }
 
     private double calculateAverageRating(Recipe recipe) {
-        if (recipe.getRatings() == null || recipe.getRatings().isEmpty()) {
+        if (recipe.getId() == null) {
             return 0.0;
         }
 
-        return recipe.getRatings()
-                .stream()
-                .mapToInt(Rating::getRating)
-                .average()
-                .orElse(0.0);
+        return ratingRepository.findAverageRatingByRecipeId(recipe.getId());
+    }
+
+    private long calculateTotalRatings(Recipe recipe) {
+        if (recipe.getId() == null) {
+            return 0L;
+        }
+
+        return ratingRepository.countByRecipeId(recipe.getId());
     }
 
     private RecipeDto mapToDto(Recipe recipe) {
@@ -326,7 +331,7 @@ public class RecipeService {
     private RecipeDto mapToDto(Recipe recipe, Long currentUserId) {
         double avgRating = calculateAverageRating(recipe);
 
-        long totalRatings = recipe.getRatings() == null ? 0L : recipe.getRatings().size();
+        long totalRatings = calculateTotalRatings(recipe);
         long totalComments = recipe.getComments() == null ? 0L : recipe.getComments().size();
 
         boolean isFavorite = currentUserId != null &&
