@@ -13,6 +13,7 @@ import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
+import PublicProfile from './pages/PublicProfile'
 import Recipes from './pages/Recipes'
 import RecipeDetail from './pages/RecipeDetail'
 import CreateRecipe from './pages/CreateRecipe'
@@ -71,6 +72,8 @@ function AppContent() {
               </PrivateRoute>
             }
           />
+
+          <Route path="/profile/:username" element={<PublicProfile />} />
 
           <Route
             path="/my-recipes"
