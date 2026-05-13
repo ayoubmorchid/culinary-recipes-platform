@@ -17,6 +17,7 @@ public class DashboardService {
 
     private final UserRepository userRepository;
     private final RecipeRepository recipeRepository;
+    private final RatingRepository ratingRepository;
     private final CategoryRepository categoryRepository;
     private final CommentRepository commentRepository;
     private final com.culinaryrecipes.favorites.FavoriteRepository favoriteRepository;
@@ -59,8 +60,7 @@ public class DashboardService {
     }
 
     private RecipeDto mapToRecipeDto(Recipe recipe) {
-        Double avgRating = recipe.getRatings().isEmpty() ? 0.0 :
-                recipe.getRatings().stream().mapToInt(Rating::getRating).average().orElse(0.0);
+        double avgRating = ratingRepository.findAverageRatingByRecipeId(recipe.getId());
 
         return RecipeDto.builder()
                 .id(recipe.getId())
@@ -79,8 +79,8 @@ public class DashboardService {
                 .categoryId(recipe.getCategory() != null ? recipe.getCategory().getId() : null)
                 .categoryName(recipe.getCategory() != null ? recipe.getCategory().getName() : null)
                 .averageRating(Math.round(avgRating * 10.0) / 10.0)
-                .totalRatings((long) recipe.getRatings().size())
-                .totalComments((long) recipe.getComments().size())
+                .totalRatings(ratingRepository.countByRecipeId(recipe.getId()))
+                .totalComments(commentRepository.countByRecipeId(recipe.getId()))
                 .build();
     }
 }
