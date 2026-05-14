@@ -59,7 +59,7 @@ const Favorites = () => {
 
   return (
     <div className="container py-5">
-      <div className="d-flex justify-content-between align-items-center mb-5">
+      <div className="page-header">
         <h1 className="h2 mb-0">
           <i className="fas fa-heart text-danger me-2"></i>
           Mes Favoris ({pagination.totalElements || 0})
@@ -67,7 +67,7 @@ const Favorites = () => {
       </div>
 
       {favorites.length === 0 ? (
-        <div className="text-center py-5">
+        <div className="empty-state">
           <i className="far fa-heart fa-3x text-muted mb-4"></i>
           <h3 className="text-muted mb-3">Aucun favori</h3>
           <p className="text-muted">Ajoutez vos recettes préférées depuis la page Recettes</p>
