@@ -80,7 +80,7 @@ const Recipes = () => {
     <div className="container py-5">
       <div className="row">
         <div className="col-lg-9">
-          <div className="d-flex justify-content-between align-items-center mb-5">
+          <div className="page-header">
             <div>
               <h1 className="section-title h2 mb-2">Toutes les Recettes</h1>
               <p className="text-muted mb-0">
@@ -94,7 +94,7 @@ const Recipes = () => {
           </div>
 
           {recipes.length === 0 ? (
-            <div className="text-center py-5">
+            <div className="empty-state">
               <i className="fas fa-search fa-3x text-muted mb-4"></i>
               <h3 className="text-muted mb-3">Aucune recette trouvée</h3>
               <p className="text-muted">Essayez de modifier vos critères de recherche</p>
@@ -118,7 +118,7 @@ const Recipes = () => {
         </div>
 
         <div className="col-lg-3">
-          <div className="card sticky-top" style={{top: '20px'}}>
+          <div className="card sticky-top luxury-sticky-panel">
             <div className="card-body">
               <h5 className="card-title fw-bold mb-4">Filtres</h5>
               

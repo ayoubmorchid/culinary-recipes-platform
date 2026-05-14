@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import RecipeCard from '../components/RecipeCard'
-import { useLocation, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Pagination from '../components/Pagination'
 import Loading from '../components/Loading'
 import { recipeService } from '../services/recipeService'
@@ -59,7 +59,7 @@ const Search = () => {
       </div>
 
       {recipes.length === 0 ? (
-        <div className="text-center py-5">
+        <div className="empty-state">
           <i className="fas fa-search fa-3x text-muted mb-4"></i>
           <h3 className="text-muted mb-3">Aucun résultat</h3>
           <p className="text-muted mb-4">Aucune recette ne correspond à votre recherche "{query}"</p>
