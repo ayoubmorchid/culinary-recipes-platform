@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Tarte fine aux pommes</title>
+  <desc id="desc">Illustration culinaire d'une tarte aux pommes.</desc>
+  <rect width="1200" height="800" fill="#f7efe5"/>
+  <circle cx="600" cy="420" r="245" fill="#d99b52"/>
+  <circle cx="600" cy="420" r="205" fill="#f0c77d"/>
+  <g fill="#f7e2ad"><path d="M600 250c60 90 60 250 0 340-60-90-60-250 0-340z"/><path d="M430 420c90-60 250-60 340 0-90 60-250 60-340 0z"/><path d="M480 300c110 20 230 135 240 250-110-25-230-135-240-250z"/></g>
+  <text x="600" y="700" text-anchor="middle" font-family="Georgia, serif" font-size="54" fill="#46362a">Tarte aux pommes</text>
+</svg>

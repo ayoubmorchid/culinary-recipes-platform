@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Tajine de legumes aux pois chiches</title>
+  <desc id="desc">Illustration culinaire d'un tajine de legumes.</desc>
+  <rect width="1200" height="800" fill="#f5eadb"/>
+  <path d="M380 490h440l-35 95H415z" fill="#b85f37"/>
+  <path d="M420 485c50-180 310-180 360 0z" fill="#d98a48"/>
+  <circle cx="600" cy="285" r="38" fill="#b85f37"/>
+  <g fill="#e0b84c"><circle cx="500" cy="485" r="24"/><circle cx="610" cy="470" r="20"/><circle cx="710" cy="490" r="23"/></g>
+  <g fill="#6f9b53"><rect x="455" y="420" width="70" height="28" rx="14"/><rect x="665" y="420" width="75" height="28" rx="14"/></g>
+  <text x="600" y="700" text-anchor="middle" font-family="Georgia, serif" font-size="54" fill="#453529">Tajine legumes</text>
+</svg>

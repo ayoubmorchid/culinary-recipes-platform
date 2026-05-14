@@ -3,9 +3,12 @@ target/
 dist/
 build/
 uploads/
+backend/data/
+.codex/
 .env
 .env.local
-application.properties
+*.local.properties
+application-*.local.properties
 .vscode/
 .idea/
 *.log

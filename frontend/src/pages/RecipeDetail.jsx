@@ -6,6 +6,7 @@ import { favoriteService } from '../services/favoriteService'
 import { useAuth } from '../hooks/useAuth'
 import Loading from '../components/Loading'
 import RecipeCard from '../components/RecipeCard'
+import { getImageUrl, getAvatarUrl } from '../utils/imageUrl.js'
 
 const RecipeDetail = () => {
   const { slug } = useParams()
@@ -35,7 +36,7 @@ const RecipeDetail = () => {
         commentService.getComments(slug),
         recipeService.getLatestRecipes(4)
       ])
-      setComments(commentsData.content || [])
+      setComments(Array.isArray(commentsData) ? commentsData : commentsData.content || [])
       setSimilarRecipes(similar.content || similar)
     } catch (error) {
       console.error('Erreur:', error)
@@ -89,7 +90,7 @@ const RecipeDetail = () => {
       <div className="row g-4 mb-5">
         <div className="col-lg-8">
           <img 
-            src={recipe.image ? `/uploads/${recipe.image}` : '/placeholder-recipe.jpg'}
+            src={getImageUrl(recipe.imageUrl, '/placeholder-recipe.jpg')}
             alt={recipe.title}
             className="img-fluid rounded-4 shadow-lg w-100" 
             style={{height: '500px', objectFit: 'cover'}}
@@ -101,7 +102,7 @@ const RecipeDetail = () => {
               <div className="card-body">
                 <h1 className="card-title h3 fw-bold mb-3">{recipe.title}</h1>
                 <div className="mb-3">
-                  <span className="badge bg-success fs-6 me-2">{recipe.category?.name}</span>
+                  <span className="badge bg-success fs-6 me-2">{recipe.categoryName || 'CatÃ©gorie'}</span>
                   <span className="badge bg-light text-dark fs-6">
                     <i className="fas fa-eye me-1"></i>{recipe.viewCount || 0} vues
                   </span>
@@ -114,7 +115,7 @@ const RecipeDetail = () => {
                     ))}
                   </div>
                   <span className="h5 mb-0">{avgRating}</span>
-                  <span className="text-muted">({recipe.ratings?.length || 0} avis)</span>
+                  <span className="text-muted">({recipe.totalRatings || 0} avis)</span>
                 </div>
 
                 {isAuthenticated && (
@@ -127,20 +128,20 @@ const RecipeDetail = () => {
                   </button>
                 )}
 
-                {recipe.author && (
-                  <Link to={`/profile/${recipe.author.username}`} className="d-block text-decoration-none">
+                {recipe.authorUsername && (
+                  <Link to={`/profile/${recipe.authorUsername}`} className="d-block text-decoration-none">
                     <div className="d-flex align-items-center p-3 bg-light rounded-3">
-                      <img src={recipe.author.avatar ? `/uploads/${recipe.author.avatar}` : '/default-avatar.png'} 
+                      <img src={getAvatarUrl(recipe.authorAvatar, '/default-avatar.png')} 
                            alt="Auteur" className="rounded-circle me-3" style={{width: '50px', height: '50px'}} />
                       <div>
-                        <h6 className="mb-0 fw-semibold">{recipe.author.username}</h6>
-                        <small className="text-muted">{recipe.author.recipeCount} recettes</small>
+                        <h6 className="mb-0 fw-semibold">{recipe.authorUsername}</h6>
+                        <small className="text-muted">Auteur</small>
                       </div>
                     </div>
                   </Link>
                 )}
 
-                {recipe.author?.username === user?.username && (
+                {recipe.authorUsername === user?.username && (
                   <div className="mt-3">
                     <Link to={`/recipes/${slug}/edit`} className="btn btn-outline-primary me-2">
                       <i className="fas fa-edit"></i> Modifier

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Poulet citron romarin</title>
+  <desc id="desc">Illustration culinaire d'un poulet au citron et romarin.</desc>
+  <rect width="1200" height="800" fill="#f4eadf"/>
+  <ellipse cx="600" cy="440" rx="345" ry="210" fill="#fffaf2" stroke="#d5bfa4" stroke-width="18"/>
+  <path d="M420 430c20-120 220-165 345-70 120 90 35 205-145 215-160 8-225-55-200-145z" fill="#c77d34"/>
+  <path d="M480 410c75-70 190-70 280 0" fill="none" stroke="#e6b567" stroke-width="22" stroke-linecap="round"/>
+  <g fill="#f4d64e"><circle cx="790" cy="360" r="45"/><circle cx="395" cy="520" r="38"/></g>
+  <path d="M760 520c55-95 92-95 140-145" fill="none" stroke="#577d46" stroke-width="16" stroke-linecap="round"/>
+  <text x="600" y="700" text-anchor="middle" font-family="Georgia, serif" font-size="54" fill="#3f332a">Poulet citron</text>
+</svg>

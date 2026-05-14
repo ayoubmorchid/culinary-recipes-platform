@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Curry rouge de lentilles</title>
+  <desc id="desc">Illustration culinaire d'un curry rouge de lentilles.</desc>
+  <rect width="1200" height="800" fill="#f7ecdf"/>
+  <ellipse cx="600" cy="430" rx="320" ry="205" fill="#fff8ef" stroke="#ccb79c" stroke-width="18"/>
+  <ellipse cx="600" cy="420" rx="250" ry="150" fill="#bd5135"/>
+  <g fill="#f0b34e"><circle cx="500" cy="380" r="14"/><circle cx="570" cy="455" r="13"/><circle cx="660" cy="395" r="15"/><circle cx="725" cy="470" r="13"/></g>
+  <g fill="#4f8b4b"><ellipse cx="455" cy="455" rx="32" ry="16"/><ellipse cx="690" cy="350" rx="34" ry="17"/></g>
+  <text x="600" y="700" text-anchor="middle" font-family="Georgia, serif" font-size="54" fill="#3f302b">Curry lentilles</text>
+</svg>

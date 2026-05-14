@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Saumon laque au miel</title>
+  <desc id="desc">Illustration culinaire d'un pave de saumon laque.</desc>
+  <rect width="1200" height="800" fill="#f4eee6"/>
+  <ellipse cx="600" cy="430" rx="330" ry="200" fill="#fbf8f1" stroke="#cbb79f" stroke-width="18"/>
+  <rect x="390" y="340" width="420" height="190" rx="48" fill="#dc6c55" transform="rotate(-5 600 435)"/>
+  <path d="M430 390c95-42 220-38 340 0M435 455c100-38 220-35 338 0" fill="none" stroke="#f5b08d" stroke-width="18" stroke-linecap="round"/>
+  <g fill="#f4d37c"><circle cx="475" cy="365" r="9"/><circle cx="610" cy="405" r="8"/><circle cx="730" cy="470" r="9"/></g>
+  <text x="600" y="700" text-anchor="middle" font-family="Georgia, serif" font-size="54" fill="#3d302b">Saumon laque</text>
+</svg>

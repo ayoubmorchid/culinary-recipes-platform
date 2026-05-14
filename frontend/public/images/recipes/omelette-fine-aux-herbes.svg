@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Omelette fine aux herbes</title>
+  <desc id="desc">Illustration culinaire d'une omelette aux herbes.</desc>
+  <rect width="1200" height="800" fill="#f7efe3"/>
+  <ellipse cx="600" cy="430" rx="330" ry="205" fill="#fffaf2" stroke="#ceb99d" stroke-width="18"/>
+  <path d="M385 450c80-130 345-145 430-12 45 72-58 130-230 125-150-4-240-48-200-113z" fill="#f1c94b"/>
+  <g stroke="#5a8d4d" stroke-width="12" stroke-linecap="round"><path d="M500 390l80 75"/><path d="M620 380l-45 95"/><path d="M710 430l-100 38"/></g>
+  <text x="600" y="700" text-anchor="middle" font-family="Georgia, serif" font-size="54" fill="#423428">Omelette herbes</text>
+</svg>

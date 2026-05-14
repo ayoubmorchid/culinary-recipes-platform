@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Aubergines roties au yaourt</title>
+  <desc id="desc">Illustration culinaire d'aubergines roties au yaourt.</desc>
+  <rect width="1200" height="800" fill="#f3eadf"/>
+  <ellipse cx="600" cy="440" rx="330" ry="205" fill="#fff8f0" stroke="#cbb79f" stroke-width="18"/>
+  <ellipse cx="500" cy="430" rx="90" ry="190" fill="#51385f" transform="rotate(18 500 430)"/>
+  <ellipse cx="710" cy="430" rx="90" ry="190" fill="#5c416d" transform="rotate(-18 710 430)"/>
+  <path d="M455 410c55 25 115 25 170 0M660 410c55 25 115 25 170 0" fill="none" stroke="#f4efe8" stroke-width="24" stroke-linecap="round"/>
+  <g fill="#ba304a"><circle cx="550" cy="500" r="12"/><circle cx="690" cy="360" r="11"/><circle cx="760" cy="505" r="12"/></g>
+  <text x="600" y="700" text-anchor="middle" font-family="Georgia, serif" font-size="54" fill="#3d332b">Aubergines roties</text>
+</svg>

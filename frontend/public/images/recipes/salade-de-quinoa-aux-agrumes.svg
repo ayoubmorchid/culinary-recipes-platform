@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="title desc">
+  <title id="title">Salade de quinoa aux agrumes</title>
+  <desc id="desc">Illustration culinaire d'une salade de quinoa aux agrumes.</desc>
+  <rect width="1200" height="800" fill="#f6efe6"/>
+  <circle cx="600" cy="410" r="250" fill="#fdfaf5" stroke="#d7c5ad" stroke-width="18"/>
+  <circle cx="470" cy="360" r="82" fill="#f6a13a"/>
+  <circle cx="650" cy="320" r="72" fill="#ffd66b"/>
+  <circle cx="720" cy="470" r="86" fill="#81a969"/>
+  <path d="M380 520c140 80 310 80 450 0" fill="none" stroke="#b58b54" stroke-width="42" stroke-linecap="round"/>
+  <g fill="#5f7f45"><circle cx="520" cy="500" r="18"/><circle cx="590" cy="520" r="15"/><circle cx="675" cy="505" r="17"/></g>
+  <text x="600" y="700" text-anchor="middle" font-family="Georgia, serif" font-size="54" fill="#3d3328">Quinoa agrumes</text>
+</svg>

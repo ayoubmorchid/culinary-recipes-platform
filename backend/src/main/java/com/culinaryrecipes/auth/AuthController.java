@@ -7,10 +7,12 @@ import com.culinaryrecipes.auth.AuthService;
 import com.culinaryrecipes.users.UserDto;
 import lombok.RequiredArgsConstructor;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -31,6 +33,10 @@ public class AuthController {
 
     @GetMapping("/me")
     public ResponseEntity<UserDto> me(@AuthenticationPrincipal UserDetails userDetails) {
+        if (userDetails == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Authentication required.");
+        }
+
         return ResponseEntity.ok(authService.getCurrentUser(userDetails.getUsername()));
     }
 }
