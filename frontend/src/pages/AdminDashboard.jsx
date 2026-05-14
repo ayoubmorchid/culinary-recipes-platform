@@ -29,7 +29,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="container py-5">
-      <div className="d-flex justify-content-between align-items-center mb-5">
+      <div className="page-header">
         <h1 className="h2 mb-0">
           <i className="fas fa-tachometer-alt me-2 text-primary"></i>
           Tableau de bord Admin
@@ -92,7 +92,7 @@ const AdminDashboard = () => {
                 <div key={user.id} className="border-bottom p-3">
                   <div className="d-flex align-items-center">
                     <div className="flex-shrink-0">
-                      <img src="/default-avatar.png" className="rounded-circle" style={{width: '40px', height: '40px'}} />
+                      <img src="/default-avatar.png" className="avatar-sm" alt={user.username} />
                     </div>
                     <div className="flex-grow-1 ms-3">
                       <h6 className="mb-0">{user.username}</h6>
@@ -116,8 +116,11 @@ const AdminDashboard = () => {
               {stats?.lastRecipes?.map((recipe, index) => (
                 <div key={recipe.id} className="border-bottom p-3">
                   <div className="d-flex">
-                    <img src={recipe.imageUrl || '/placeholder-recipe.jpg'} 
-                         className="rounded me-3" style={{width: '60px', height: '60px', objectFit: 'cover'}} />
+                    <img
+                      src={recipe.imageUrl || '/placeholder-recipe.jpg'}
+                      className="thumb-sm me-3"
+                      alt={recipe.title}
+                    />
                     <div className="flex-grow-1">
                       <h6 className="mb-1">{recipe.title}</h6>
                       <small className="text-muted">{recipe.categoryName}</small>
