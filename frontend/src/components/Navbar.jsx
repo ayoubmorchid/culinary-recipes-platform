@@ -8,8 +8,8 @@ const Navbar = () => {
   const location = useLocation()
   const [searchTerm, setSearchTerm] = useState('')
 
-  const handleSearch = (e) => {
-    e.preventDefault()
+  const handleSearch = (event) => {
+    event.preventDefault()
     if (searchTerm.trim()) navigate(`/search?q=${encodeURIComponent(searchTerm)}`)
   }
 
@@ -22,10 +22,18 @@ const Navbar = () => {
     <nav className="navbar navbar-expand-lg luxury-navbar sticky-top">
       <div className="container">
         <Link className="navbar-brand luxury-brand" to="/">
-          ✦ Culinary Recipes
+          Culinary Recipes
         </Link>
 
-        <button className="navbar-toggler luxury-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button
+          className="navbar-toggler luxury-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+          aria-controls="navbarNav"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span className="navbar-toggler-icon"></span>
         </button>
 
@@ -46,15 +54,15 @@ const Navbar = () => {
             )}
           </ul>
 
-          <form onSubmit={handleSearch} className="d-flex luxury-search me-3">
+          <form onSubmit={handleSearch} className="d-flex luxury-search me-lg-3">
             <input
               className="form-control"
               type="search"
               placeholder="Rechercher une recette..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(event) => setSearchTerm(event.target.value)}
             />
-            <button className="btn luxury-gold-btn" type="submit">🔍</button>
+            <button className="btn luxury-gold-btn" type="submit">Rechercher</button>
           </form>
 
           <ul className="navbar-nav">
@@ -72,7 +80,7 @@ const Navbar = () => {
                   <li><Link className="dropdown-item" to="/profile">Mon Profil</Link></li>
                   {user?.role === 'ADMIN' && <li><Link className="dropdown-item" to="/admin">Admin</Link></li>}
                   <li><hr className="dropdown-divider" /></li>
-                  <li><button className="dropdown-item text-danger" onClick={handleLogout}>Déconnexion</button></li>
+                  <li><button className="dropdown-item text-danger" onClick={handleLogout}>Deconnexion</button></li>
                 </ul>
               </li>
             )}
