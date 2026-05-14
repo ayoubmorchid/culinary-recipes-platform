@@ -58,7 +58,7 @@ const MyRecipes = () => {
 
   return (
     <div className="container py-5">
-      <div className="d-flex justify-content-between align-items-center mb-5">
+      <div className="page-header">
         <h1 className="h2 mb-0">
           <i className="fas fa-drumstick-bite me-2 text-success"></i>
           Mes Recettes ({pagination.totalElements || 0})
@@ -70,7 +70,7 @@ const MyRecipes = () => {
       </div>
 
       {recipes.length === 0 ? (
-        <div className="text-center py-5">
+        <div className="empty-state">
           <i className="fas fa-drumstick-bite fa-3x text-muted mb-4"></i>
           <h3 className="text-muted mb-3">Aucune recette</h3>
           <p className="text-muted">Commencez par créer votre première recette</p>
