@@ -14,8 +14,7 @@ const Alert = ({ alert }) => {
   }
 
   return (
-    <div className={`alert ${getVariantClass(alert.type)} alert-dismissible fade show position-fixed`} 
-         style={{top: '20px', right: '20px', zIndex: 9999, minWidth: '300px'}} role="alert">
+    <div className={`alert ${getVariantClass(alert.type)} alert-dismissible fade show position-fixed luxury-alert`} role="alert">
       <i className={`fas me-2 fa-${alert.type === 'success' ? 'check-circle' : alert.type === 'danger' ? 'exclamation-triangle' : 'info-circle'}`}></i>
       {alert.message}
       <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Fermer"></button>
