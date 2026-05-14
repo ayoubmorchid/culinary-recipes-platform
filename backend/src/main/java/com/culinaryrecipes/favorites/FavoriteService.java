@@ -4,6 +4,7 @@ import com.culinaryrecipes.exceptions.ResourceNotFoundException;
 import com.culinaryrecipes.recipes.Recipe;
 import com.culinaryrecipes.recipes.RecipeDto;
 import com.culinaryrecipes.recipes.RecipeRepository;
+import com.culinaryrecipes.recipes.RatingRepository;
 import com.culinaryrecipes.users.User;
 import com.culinaryrecipes.users.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class FavoriteService {
 
     private final FavoriteRepository favoriteRepository;
     private final RecipeRepository recipeRepository;
+    private final RatingRepository ratingRepository;
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
@@ -121,6 +123,8 @@ public class FavoriteService {
 
     private FavoriteDto mapToDto(Favorite favorite) {
         Recipe recipe = favorite.getRecipe();
+        double averageRating = recipe.getId() == null ? 0.0 : ratingRepository.findAverageRatingByRecipeId(recipe.getId());
+        long totalRatings = recipe.getId() == null ? 0L : ratingRepository.countByRecipeId(recipe.getId());
 
         RecipeDto recipeDto = RecipeDto.builder()
                 .id(recipe.getId())
@@ -140,6 +144,8 @@ public class FavoriteService {
                 .categoryId(recipe.getCategory() != null ? recipe.getCategory().getId() : null)
                 .categoryName(recipe.getCategory() != null ? recipe.getCategory().getName() : null)
                 .categorySlug(recipe.getCategory() != null ? recipe.getCategory().getSlug() : null)
+                .averageRating(Math.round(averageRating * 10.0) / 10.0)
+                .totalRatings(totalRatings)
                 .isFavorite(true)
                 .build();
 

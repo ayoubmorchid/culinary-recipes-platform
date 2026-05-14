@@ -10,8 +10,12 @@ const RecipeCard = ({ recipe }) => {
   const [isFavorite, setIsFavorite] = React.useState(recipe?.isFavorite || false)
   const [loading, setLoading] = React.useState(false)
 
+  const averageRating = Number(recipe?.averageRating ?? 0)
+  const totalRatings = Number(recipe?.totalRatings ?? 0)
+  const roundedRating = Math.round(averageRating)
+
   const toggleFavorite = async () => {
-    if (!isAuthenticated) return
+    if (!isAuthenticated || !recipe?.id) return
 
     setLoading(true)
     try {
@@ -23,27 +27,6 @@ const RecipeCard = ({ recipe }) => {
       setLoading(false)
     }
   }
-
-  const ratingValue =
-    recipe?.averageRating ??
-    recipe?.avgRating ??
-    recipe?.rating ??
-    recipe?.note ??
-    recipe?.score ??
-    recipe?.stars ??
-    0
-
-  const avgRating = Number(ratingValue) || 0
-
-  const totalRatings =
-    recipe?.totalRatings ??
-    recipe?.ratingCount ??
-    recipe?.reviewsCount ??
-    recipe?.reviewCount ??
-    recipe?.avisCount ??
-    recipe?.numberOfRatings ??
-    recipe?.ratingsCount ??
-    0
 
   return (
     <div className="card recipe-card fade-in">
@@ -57,37 +40,36 @@ const RecipeCard = ({ recipe }) => {
         {isAuthenticated && (
           <button
             type="button"
-            className={`position-absolute top-0 end-0 m-2 btn btn-sm p-2 rounded-circle ${
+            className={`favorite-btn position-absolute top-0 end-0 m-2 btn btn-sm p-2 rounded-circle ${
               isFavorite ? 'btn-success' : 'btn-outline-light'
             }`}
             onClick={toggleFavorite}
             disabled={loading}
             title={isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
           >
-            <i
-              className={`fa-heart fs-6 ${
-                isFavorite ? 'fas text-white' : 'far text-success'
-              }`}
-            ></i>
+            <span aria-hidden="true">{isFavorite ? '♥' : '♡'}</span>
+            <span className="visually-hidden">
+              {isFavorite ? 'Retirer des favoris' : 'Ajouter aux favoris'}
+            </span>
           </button>
         )}
       </div>
 
-      <div className="card-body d-flex flex-column">
+      <div className="card-body">
         <Link
           to={`/recipes/${recipe?.slug}`}
-          className="card-title h5 fw-bold text-dark text-decoration-none mb-2"
+          className="card-title h5 fw-bold text-decoration-none mb-2"
         >
           {recipe?.title}
         </Link>
 
         <div className="mb-2">
           <span className="badge bg-success me-1">
-            {recipe?.categoryName || 'Catégorie'}
+            {recipe?.categoryName || 'Categorie'}
           </span>
         </div>
 
-        <p className="card-text text-muted small flex-grow-1">
+        <p className="card-text text-muted small">
           {recipe?.description
             ? recipe.description.length > 100
               ? `${recipe.description.substring(0, 100)}...`
@@ -95,26 +77,22 @@ const RecipeCard = ({ recipe }) => {
             : 'Aucune description disponible.'}
         </p>
 
-        <div className="recipe-card-footer d-flex justify-content-between align-items-center mt-auto">
-          <div className="d-flex align-items-center">
-            <div className="star-rating me-2">
+        <div className="recipe-card-footer">
+          <div className="recipe-rating">
+            <div className="star-rating" aria-label={`Note ${averageRating.toFixed(1)} sur 5`}>
               {[1, 2, 3, 4, 5].map((star) => (
                 <span
                   key={star}
-                  style={{
-                    color: star <= Math.round(avgRating) ? '#ffc107' : '#d6d6d6',
-                    fontSize: '18px',
-                    lineHeight: '1',
-                    marginRight: '2px'
-                  }}
+                  className={star <= roundedRating ? 'star filled' : 'star'}
+                  aria-hidden="true"
                 >
                   ★
                 </span>
               ))}
             </div>
 
-            <span className="text-muted small">
-              {avgRating.toFixed(1)} ({totalRatings} avis)
+            <span className="rating-count">
+              {averageRating.toFixed(1)} ({totalRatings} avis)
             </span>
           </div>
 

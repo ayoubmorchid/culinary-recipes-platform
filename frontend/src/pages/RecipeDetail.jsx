@@ -102,20 +102,27 @@ const RecipeDetail = () => {
               <div className="card-body">
                 <h1 className="card-title h3 fw-bold mb-3">{recipe.title}</h1>
                 <div className="mb-3">
-                  <span className="badge bg-success fs-6 me-2">{recipe.categoryName || 'CatÃ©gorie'}</span>
+                  <span className="badge bg-success fs-6 me-2">{recipe.categoryName || 'Categorie'}</span>
                   <span className="badge bg-light text-dark fs-6">
                     <i className="fas fa-eye me-1"></i>{recipe.viewCount || 0} vues
                   </span>
                 </div>
                 
-                <div className="d-flex align-items-center mb-4">
-                  <div className="star-rating me-3">
-                    {[...Array(5)].map((_, i) => (
-                      <i key={i} className={`fas fa-star ${i < avgRating ? 'text-warning' : 'fal fa-star text-muted'}`}></i>
+                <div className="recipe-rating mb-4">
+                  <div className="star-rating" aria-label={`Note ${Number(avgRating).toFixed(1)} sur 5`}>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <span
+                        key={star}
+                        className={star <= Math.round(Number(avgRating) || 0) ? 'star filled' : 'star'}
+                        aria-hidden="true"
+                      >
+                        ★
+                      </span>
                     ))}
                   </div>
-                  <span className="h5 mb-0">{avgRating}</span>
-                  <span className="text-muted">({recipe.totalRatings || 0} avis)</span>
+                  <span className="rating-count">
+                    {Number(avgRating || 0).toFixed(1)} ({recipe.totalRatings || 0} avis)
+                  </span>
                 </div>
 
                 {isAuthenticated && (
@@ -237,26 +244,35 @@ const RecipeDetail = () => {
                 )}
 
                 <div className="comments-list">
-                  {comments.map((comment) => (
-                    <div key={comment.id} className="border-bottom pb-3 mb-3">
-                      <div className="d-flex">
-                        <img src={comment.author.avatar ? `/uploads/${comment.author.avatar}` : '/default-avatar.png'} 
-                             alt="Auteur" className="rounded-circle me-3" style={{width: '40px', height: '40px'}} />
-                        <div className="flex-grow-1">
-                          <div className="d-flex justify-content-between align-items-start">
-                            <h6 className="mb-1 fw-semibold">{comment.author.username}</h6>
-                            <small className="text-muted">{new Date(comment.createdAt).toLocaleDateString('fr-FR')}</small>
+                  {comments.map((comment) => {
+                    const authorUsername = comment.authorUsername || comment.author?.username || 'Utilisateur'
+                    const authorAvatar = comment.authorAvatar || comment.author?.avatar
+
+                    return (
+                      <div key={comment.id} className="border-bottom pb-3 mb-3">
+                        <div className="d-flex">
+                          <img
+                            src={getAvatarUrl(authorAvatar, '/default-avatar.png')}
+                            alt="Auteur"
+                            className="rounded-circle me-3"
+                            style={{width: '40px', height: '40px'}}
+                          />
+                          <div className="flex-grow-1">
+                            <div className="d-flex justify-content-between align-items-start">
+                              <h6 className="mb-1 fw-semibold">{authorUsername}</h6>
+                              <small className="text-muted">{new Date(comment.createdAt).toLocaleDateString('fr-FR')}</small>
+                            </div>
+                            <p className="mb-0">{comment.content}</p>
+                            {authorUsername === user?.username && (
+                              <button className="btn btn-sm btn-outline-danger mt-2">
+                                Supprimer
+                              </button>
+                            )}
                           </div>
-                          <p className="mb-0">{comment.content}</p>
-                          {comment.author.username === user?.username && (
-                            <button className="btn btn-sm btn-outline-danger mt-2">
-                              Supprimer
-                            </button>
-                          )}
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                   {comments.length === 0 && (
                     <p className="text-muted text-center py-4">Aucun commentaire pour le moment. Soyez le premier !</p>
                   )}
