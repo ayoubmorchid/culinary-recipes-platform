@@ -92,12 +92,11 @@ const RecipeDetail = () => {
           <img 
             src={getImageUrl(recipe.imageUrl, '/placeholder-recipe.jpg')}
             alt={recipe.title}
-            className="img-fluid rounded-4 shadow-lg w-100" 
-            style={{height: '500px', objectFit: 'cover'}}
+            className="recipe-detail-image img-fluid rounded-4 shadow-lg w-100"
           />
         </div>
         <div className="col-lg-4">
-          <div className="sticky-top" style={{top: '20px'}}>
+          <div className="sticky-top luxury-sticky-panel">
             <div className="card h-100 border-0 shadow">
               <div className="card-body">
                 <h1 className="card-title h3 fw-bold mb-3">{recipe.title}</h1>
@@ -138,8 +137,11 @@ const RecipeDetail = () => {
                 {recipe.authorUsername && (
                   <Link to={`/profile/${recipe.authorUsername}`} className="d-block text-decoration-none">
                     <div className="d-flex align-items-center p-3 bg-light rounded-3">
-                      <img src={getAvatarUrl(recipe.authorAvatar, '/default-avatar.png')} 
-                           alt="Auteur" className="rounded-circle me-3" style={{width: '50px', height: '50px'}} />
+                      <img
+                        src={getAvatarUrl(recipe.authorAvatar, '/default-avatar.png')}
+                        alt="Auteur"
+                        className="avatar-md me-3"
+                      />
                       <div>
                         <h6 className="mb-0 fw-semibold">{recipe.authorUsername}</h6>
                         <small className="text-muted">Auteur</small>
@@ -254,8 +256,7 @@ const RecipeDetail = () => {
                           <img
                             src={getAvatarUrl(authorAvatar, '/default-avatar.png')}
                             alt="Auteur"
-                            className="rounded-circle me-3"
-                            style={{width: '40px', height: '40px'}}
+                            className="avatar-sm me-3"
                           />
                           <div className="flex-grow-1">
                             <div className="d-flex justify-content-between align-items-start">
@@ -283,7 +284,7 @@ const RecipeDetail = () => {
         </div>
 
         <div className="col-lg-4">
-          <div className="sticky-top" style={{top: '20px'}}>
+          <div className="sticky-top luxury-sticky-panel">
             <div className="card mb-4 border-0 shadow">
               <div className="card-header bg-success text-white">
                 <h6 className="mb-0">
